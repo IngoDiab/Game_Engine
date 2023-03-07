@@ -35,3 +35,28 @@ void ShaderHandler::GetTextureLocation(const int _slotTexture, const string& _na
 {
     mTexturesHandlers[_slotTexture] = glGetUniformLocation(mShaderHandler, _nameLocation.c_str());
 }
+
+void ShaderHandler::GetNumericalLocation(const string& _nameLocation)
+{
+    int _slotFloat = glGetUniformLocation(mShaderHandler, _nameLocation.c_str());
+    if(_slotFloat == -1) return;
+    mNumericalHandlers[_nameLocation] = _slotFloat;
+}
+
+void ShaderHandler::SendFloat(const string& _nameLocation, float _value)
+{
+    for(pair<string, int> _locations : mNumericalHandlers)
+    {
+        if(_nameLocation != _locations.first) continue;
+        glUniform1f(_locations.second, _value);
+    }
+}
+
+void ShaderHandler::SendInt(const string& _nameLocation, int _value)
+{
+    for(pair<string, int> _locations : mNumericalHandlers)
+    {
+        if(_nameLocation != _locations.first) continue;
+        glUniform1i(_locations.second, _value);
+    }
+}

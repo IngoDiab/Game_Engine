@@ -16,3 +16,12 @@ void LandscapeMaterial::Initialize()
     LoadTexture(1, "Textures/2D/rock.png");
     LoadTexture(2, "Textures/2D/snowrocks.png");
 }
+
+void LandscapeMaterial::UseMaterial(const int _typeTexture, const mat4& _model, const mat4& _view, const mat4& _proj)
+{
+    Material::UseMaterial(_typeTexture, _model, _view, _proj);
+    mShader->SendFloat("mHeightGrassRock",mHeightGrassRock);
+    mShader->SendFloat("mHeightRockSnow",mHeightRockSnow);
+    mShader->SendFloat("mTransitionThreshold",mTransitionThreshold);
+    mShader->SendInt("mTiling",mTiling);
+}

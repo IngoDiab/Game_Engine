@@ -9,7 +9,6 @@ ShaderManager::~ShaderManager()
 
 unsigned int ShaderManager::LoadShader(const ShaderInfo& _shader)
 {
-    //TODO Fix Texture grass;
     if(Exists(_shader)) return GetShader(_shader);
     unsigned int _shaderHandler = LoadShaders(_shader.mVertexShader.c_str(), _shader.mFragmentShader.c_str());
     mShaders[_shader] = _shaderHandler;

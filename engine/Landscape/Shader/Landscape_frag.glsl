@@ -1,8 +1,12 @@
 #version 330 core
 
 uniform sampler2D mGrassTex;
+uniform float mHeightGrassRock;
 uniform sampler2D mRockTex;
+uniform float mHeightRockSnow;
 uniform sampler2D mSnowrockTex;
+
+uniform float mTransitionThreshold;
 
 in vec3 o_position;
 in vec2 o_uv;
@@ -14,14 +18,23 @@ void main(){
         vec4 _texelGrass = texture(mGrassTex, o_uv);
         vec4 _texelRock = texture(mRockTex, o_uv);
         vec4 _texelSnowrock = texture(mSnowrockTex, o_uv);
-        //vec3 albedoColor = texture(mGrassTex, o_uv).rgb;
-        //FragColor = vec4(0.2, 0.2, 0.4, 1.0);
-        
-        
-        // if(o_height_in_model<=65.) FragColor = vec4(0,1,0,1);
-        // else if(o_height_in_model>65. && o_height_in_model<=90.) FragColor = vec4(1,1,0,1);
-        // else if(o_height_in_model>=90.) FragColor = vec4(1,0,0,1);
-        if(o_height_in_model<=65.) FragColor = mix(_texelGrass, _texelRock, o_height_in_model/65.);
-        else if(o_height_in_model>65. && o_height_in_model<=90.) FragColor = mix(_texelRock, _texelSnowrock, (o_height_in_model-65.)/(90.-65.));
-        else if(o_height_in_model>90.) FragColor = mix(_texelRock, _texelSnowrock, max(1,(o_height_in_model-90.)/(100.-90.)));
+        // FragColor = texture(mGrassTex, o_uv);
+        // //FragColor = vec4(0.2, 0.2, 0.4, 1.0);
+
+        float mHeightGrassRockMin = mHeightGrassRock - mTransitionThreshold;
+        float mHeightGrassRockMax = mHeightGrassRock + mTransitionThreshold;
+
+        float mHeightRockSnowMin = mHeightRockSnow - mTransitionThreshold;
+        float mHeightRockSnowMax = mHeightRockSnow + mTransitionThreshold;
+
+        //Grass
+        if(o_height_in_model<=mHeightGrassRockMin) FragColor = _texelGrass;
+        else if(o_height_in_model<=mHeightGrassRockMax) FragColor = mix(_texelGrass, _texelRock, (o_height_in_model- mHeightGrassRockMin)/(mHeightGrassRockMax - mHeightGrassRockMin));
+
+        //Rock
+        else if(o_height_in_model<=mHeightRockSnowMin) FragColor = _texelRock;
+        else if(o_height_in_model<=mHeightRockSnowMax) FragColor = mix(_texelRock, _texelSnowrock, (o_height_in_model-mHeightRockSnowMin)/(mHeightRockSnowMax-mHeightRockSnowMin));
+
+        //Snow
+        else if(o_height_in_model>mHeightRockSnowMax) FragColor = _texelSnowrock;
 }

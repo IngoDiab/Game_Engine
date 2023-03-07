@@ -61,7 +61,9 @@ void Engine::Run()
             mMainWindow->EnableDepth(false);
             mCurrentScene->DrawSkybox(mActiveCamera);
             mMainWindow->EnableDepth(true);
+            // mMainWindow->PolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             mCurrentScene->DrawScene(mActiveCamera);
+            // mMainWindow->PolygonMode(GL_FRONT_AND_BACK,  GL_FILL);
         }
         catch(const CustomException& e)
         {
@@ -132,7 +134,7 @@ void Engine::UnloadCurrentScene()
 
 void Engine::SetViewportCamera(Camera* const _camera)
 {
-    if(!_camera) return;
+    if(!_camera) return ResetCameraToEditor();
     if(mActiveCamera) mActiveCamera->Activate(false);
     mActiveCamera = _camera;
     _camera->Activate(true);

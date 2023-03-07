@@ -23,7 +23,7 @@ Landscape* SceneTP1::CreateLandscape()
 {
     ObjectManager* _objectManager = ObjectManager::Instance();
     Landscape* _landscape = _objectManager->Create<Landscape>(new Landscape(vec3(0,20,0), vec3(0), vec3(200,1,200)));
-    _landscape->ChangeResolution(256,256);
+    _landscape->ChangeResolution(16,16);
     _landscape->ApplyHeightmap("Textures/Heightmaps/Heightmap_Mountain.png",100);
     return _landscape;
 }
@@ -64,5 +64,5 @@ void SceneTP1::TurnLandscapeOrbit(const bool _active)
     if(!_active) return;
     mIsLandscapeTurningOrbit = !mIsLandscapeTurningOrbit;
     mLandscape->ToggleRotation(_active);
-    mIsLandscapeTurningOrbit ? Engine::Instance()->SetViewportCamera(mOrbitalCamera) : Engine::Instance()->ResetCameraToEditor();
+    mIsLandscapeTurningOrbit ? Engine::Instance()->SetViewportCamera(mOrbitalCamera) : Engine::Instance()->SetViewportCamera(nullptr);
 }
