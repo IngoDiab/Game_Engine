@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "engine/Camera/Camera/Camera.h"
 #include "engine/Inputs/InputManager/InputManager.h"
+#include "engine/Physic/PhysicManager/PhysicManager.h"
 
 Scene::~Scene()
 {
@@ -20,6 +21,9 @@ void Scene::UnloadScene()
 
     ObjectManager* _objectManager = ObjectManager::Instance();   
     _objectManager->DeleteObjectsSpecificDurability(DURABILITY::SCENE);
+
+    PhysicManager* _physicManager = PhysicManager::Instance();
+    _physicManager->DeletePhysicComponents();
 }
 
 void Scene::Update(const float _deltaTime)

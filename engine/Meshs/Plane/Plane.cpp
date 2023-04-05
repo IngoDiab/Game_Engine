@@ -5,6 +5,20 @@ Plane::Plane(const int _nbVertexWidth, const int _nbVertexLength) : mNbVertexWid
     CreatePlane();
 }
 
+vec3 Plane::GetPositonVertex(const float _u, const float _v, bool _ceilU, bool _ceilV)
+{
+    int _indexU = _ceilU ? ceil(_u*(mNbVertexWidth-1)) : floor(_u*(mNbVertexWidth-1));
+    int _indexV = _ceilV ? ceil(_v*(mNbVertexLength-1)) : floor(_v*(mNbVertexLength-1));
+    return mPositions[_indexV*mNbVertexWidth+_indexU];
+}
+
+vec2 Plane::GetUVVertex(const float _u, const float _v, bool _ceilU, bool _ceilV)
+{
+    int _indexU = _ceilU ? ceil(_u*(mNbVertexWidth-1)) : floor(_u*(mNbVertexWidth-1));
+    int _indexV = _ceilV ? ceil(_v*(mNbVertexLength-1)) : floor(_v*(mNbVertexLength-1));
+    return mUVs[_indexV*mNbVertexWidth+_indexU];
+}
+
 void Plane::CreatePlane(const bool& _generatePos, const bool& _generateUV, const bool& _generateIndices)
 {
     if(_generatePos)

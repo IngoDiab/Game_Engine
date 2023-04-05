@@ -1,9 +1,24 @@
 #include "MeshComponent.h"
 
+#include <limits>
+#include <iostream>
+using namespace std;
+
 #include "engine/Meshs/Mesh/Mesh.h"
 #include "engine/Materials/Material.h"
 #include "engine/ShaderHandlers/ShaderHandler/ShaderHandler.h"
 #include "engine/Camera/Camera/Camera.h"
+
+void MeshComponent::ChangeMeshByDistance(Camera* _renderingCamera, float _threshold)
+{
+    double _distanceCamera = length(_renderingCamera->GetWorldPosition()-mTransform.GetTransformData()->mWorldPosition);
+    for(pair<double,Mesh*> _pair : mLODS)
+    {
+        double _distanceRequired = _pair.first;
+        if(_distanceRequired+_threshold >= _distanceCamera) return;
+        mMesh = _pair.second;
+    }
+}
 
 void MeshComponent::Render(Camera* _renderingCamera)
 {
@@ -17,6 +32,7 @@ void MeshComponent::Render(Camera* _renderingCamera)
     mMaterial->UseMaterial(GL_TEXTURE_2D, _modelMatrix, _viewMatrix, _projMatrix);
 
     //Draw
+    ChangeMeshByDistance(_renderingCamera, 25);
     mMesh->DrawMesh();
 }
 

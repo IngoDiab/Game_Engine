@@ -36,7 +36,9 @@ void Engine::Run()
         mInputManager.CheckStateAllAxis(mMainWindow->GetWindow());
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        mSceneManager.ProcessCurrentScene(mActiveCamera, mMainWindow, mDeltaTime);
+        mSceneManager.UpdateCurrentScene(mDeltaTime);
+        mPhysicManager.UpdatePhysic();
+        mSceneManager.DrawCurrentScene(mActiveCamera, mMainWindow);
 
         // Swap buffers
         glfwSwapBuffers(mMainWindow->GetWindow());

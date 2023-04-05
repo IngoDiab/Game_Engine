@@ -1,4 +1,6 @@
 #pragma once
+#include <map>
+using namespace std;
 
 class Mesh;
 class Camera;
@@ -8,6 +10,7 @@ class IRenderable
 {
 protected:
     Mesh* mMesh = nullptr;
+    map<double, Mesh*> mLODS = map<double, Mesh*>();
     Material* mMaterial = nullptr;
     bool mCanBeRendered = true;
 
@@ -22,6 +25,7 @@ public:
     void SetCanBeRendered(const bool _canBeRendered) {mCanBeRendered = _canBeRendered;}
 
 public:
+    virtual void ChangeMeshByDistance(Camera* _renderingCamera, float _threshold) = 0;
     virtual void Render(Camera* _renderingCamera) = 0;
     virtual void CleanRessources() = 0;
 };

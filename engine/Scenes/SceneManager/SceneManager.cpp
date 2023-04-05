@@ -6,7 +6,7 @@
 #include "engine/Windows/Window.h"
 #include <GL/glew.h>
 
-void SceneManager::ProcessCurrentScene(Camera* _activeCamera, Window* _window, const float& _deltaTime)
+void SceneManager::UpdateCurrentScene(const float& _deltaTime)
 {
     try
     {
@@ -26,7 +26,10 @@ void SceneManager::ProcessCurrentScene(Camera* _activeCamera, Window* _window, c
     {
         cerr << e.what() << '\n';
     }
+}
 
+void SceneManager::DrawCurrentScene(Camera* _activeCamera, Window* _window)
+{
     try
     {
         if(!mCurrentScene) throw CustomException("No current Scene.");

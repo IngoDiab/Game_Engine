@@ -78,6 +78,9 @@ add_executable(engine
 	engine/Camera/OrbitalCamera/OrbitalCamera.h
 	engine/Camera/OrbitalCamera/OrbitalCamera.cpp
 	
+	engine/Character/Character.h
+	engine/Character/Character.cpp
+	
 	engine/Components/Component/Component.h
 	engine/Components/Component/Component.cpp
 	engine/Components/MeshComponent/MeshComponent.h
@@ -124,6 +127,13 @@ add_executable(engine
 	engine/Objects/ObjectManager/ObjectManager.h
 	engine/Objects/ObjectManager/ObjectManager.cpp
 	
+	engine/Physic/Collider/Collider.h
+	engine/Physic/Collider/Collider.cpp
+	engine/Physic/PhysicComponent/PhysicComponent.h
+	engine/Physic/PhysicComponent/PhysicComponent.cpp
+	engine/Physic/PhysicManager/PhysicManager.h
+	engine/Physic/PhysicManager/PhysicManager.cpp
+	
 	engine/Planets/Planet/Planet.h
 	engine/Planets/Planet/Planet.cpp
 	engine/Planets/Material/PlanetMaterial.h
@@ -140,6 +150,8 @@ add_executable(engine
 	engine/Scenes/TP1/SceneTP1.cpp
 	engine/Scenes/TP2/SceneTP2.h
 	engine/Scenes/TP2/SceneTP2.cpp
+	engine/Scenes/TP3/SceneTP3.h
+	engine/Scenes/TP3/SceneTP3.cpp
 	
 	engine/ShaderHandlers/ShaderHandler/ShaderHandler.h
 	engine/ShaderHandlers/ShaderHandler/ShaderHandler.cpp

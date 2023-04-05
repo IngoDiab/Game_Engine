@@ -7,9 +7,11 @@ using namespace std;
 
 #include "engine/Objects/Object/Object.h"
 #include "engine/Renderer/Renderer.h"
+#include "engine/Physic/PhysicManager/PhysicManager.h"
 #include "engine/Transform/Transform.h"
 #include "engine/Utils/Interfaces/ITickable.h"
 #include "engine/Utils/Interfaces/IRenderable.h"
+#include "engine/Physic/PhysicComponent/PhysicComponent.h"
 #include "engine/Components/Component/Component.h"
 
 class Camera;
@@ -106,6 +108,9 @@ T* GameObject::AddComponent(const vec3& _position, const vec3& _rotation, const 
 
     IRenderable* _componentRenderable = dynamic_cast<IRenderable*>(_object);
     if(_componentRenderable) Renderer::Instance()->AddRenderable(_componentRenderable);
+
+    PhysicComponent* _componentPhysic = dynamic_cast<PhysicComponent*>(_object);
+    if(_componentPhysic) PhysicManager::Instance()->AddPhysicComponent(_componentPhysic);
 
     return _object;
 }

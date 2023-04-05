@@ -14,6 +14,10 @@ class LandscapeMaterial : public Material
     float mHeightRockSnow = 80;
     float mTransitionThreshold = 10;
     int mTiling = 20;
+    int mMaxHeight = 1;
+
+public:
+    void SetHeightmap(const string& _map, const float _maxHeight){LoadTexture(0, _map); mMaxHeight=_maxHeight;}
 
 public:
     LandscapeMaterial();
@@ -21,6 +25,5 @@ public:
 
 public:
     virtual void Initialize() override;
-
     virtual void UseMaterial(const int _typeTexture, const mat4& _model, const mat4& _view, const mat4& _proj) override;
 };

@@ -24,7 +24,7 @@ Landscape* SceneTP1::CreateLandscape()
     ObjectManager* _objectManager = ObjectManager::Instance();
     Landscape* _landscape = _objectManager->Create<Landscape>();
     _landscape->ChangeResolution(16,16);
-    _landscape->ApplyHeightmap("Textures/Heightmaps/Heightmap_Mountain.png",100);
+    _landscape->ApplyHeightmap("Textures/Heightmaps/height_test.png",100);
     return _landscape;
 }
 
