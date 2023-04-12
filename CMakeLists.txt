@@ -36,6 +36,7 @@ include_directories(
 	external/glfw-3.1.2/include/
 	external/glm-0.9.7.1/
 	external/glew-1.13.0/include/
+	external/assimp/include/
 	.
 )
 
@@ -89,6 +90,8 @@ add_executable(engine
 	engine/Engine/Engine.h
 	engine/Engine/Engine.cpp
 	
+	engine/FilesPath/FilesPath.h
+	
 	engine/Inputs/InputManager/InputManager.h
 	engine/Inputs/InputManager/InputManager.cpp
 	engine/Inputs/MouseManager/MouseManager.h
@@ -109,6 +112,8 @@ add_executable(engine
 	engine/Landscape/ShaderHandler/LandscapeShaderHandler.h
 	engine/Landscape/ShaderHandler/LandscapeShaderHandler.cpp
 	
+	engine/Materials/BaseMaterial/BaseMaterial.h
+	engine/Materials/BaseMaterial/BaseMaterial.cpp
 	engine/Materials/Material.h
 	engine/Materials/Material.cpp
 	
@@ -136,8 +141,6 @@ add_executable(engine
 	
 	engine/Planets/Planet/Planet.h
 	engine/Planets/Planet/Planet.cpp
-	engine/Planets/Material/PlanetMaterial.h
-	engine/Planets/Material/PlanetMaterial.cpp
 	
 	engine/Renderer/Renderer.h
 	engine/Renderer/Renderer.cpp
@@ -153,10 +156,10 @@ add_executable(engine
 	engine/Scenes/TP3/SceneTP3.h
 	engine/Scenes/TP3/SceneTP3.cpp
 	
+	engine/ShaderHandlers/BaseShaderHandler/BaseShaderHandler.h
+	engine/ShaderHandlers/BaseShaderHandler/BaseShaderHandler.cpp
 	engine/ShaderHandlers/ShaderHandler/ShaderHandler.h
 	engine/ShaderHandlers/ShaderHandler/ShaderHandler.cpp
-	engine/ShaderHandlers/PhongShaderHandler/PhongShaderHandler.h
-	engine/ShaderHandlers/PhongShaderHandler/PhongShaderHandler.cpp
 	engine/ShaderHandlers/ShaderManager/ShaderManager.h
 	engine/ShaderHandlers/ShaderManager/ShaderManager.cpp
 	

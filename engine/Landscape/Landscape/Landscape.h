@@ -1,6 +1,6 @@
 #pragma once
 #include "engine/Objects/GameObject/GameObject.h"
-
+#include "engine/Utils/Interfaces/IRenderable.h"
 #include <string>
 using namespace std;
 
@@ -8,11 +8,11 @@ class LandscapeMesh;
 class LandscapeMaterial;
 class MeshComponent;
 
-class Landscape : public GameObject
+class Landscape : public GameObject, public IRenderable
 {
-    MeshComponent* mMeshComponent = nullptr;
-    LandscapeMesh* mMeshRef= nullptr;
-    LandscapeMaterial* mMaterialRef = nullptr;
+    //MeshComponent* mMeshComponent = nullptr;
+    // LandscapeMesh* mMeshRef= nullptr;
+    // LandscapeMaterial* mMaterialRef = nullptr;
 
     unsigned char* mHeightmap = nullptr;
     int mWidthImage = 0;
@@ -21,6 +21,23 @@ class Landscape : public GameObject
 
     bool mCanRotate = false;
     float mRotateSpeed = 1;
+
+protected:
+    LandscapeMesh* mMesh = nullptr;
+    map<double, LandscapeMesh*> mLODS = map<double, LandscapeMesh*>();
+    LandscapeMaterial* mMaterial = nullptr;
+    bool mCanBeRendered = true;
+
+public:
+    virtual Mesh* GetMesh() override {return (Mesh*)mMesh;}
+    void SetMesh(LandscapeMesh* const _mesh) {mMesh = _mesh;}
+
+    virtual BaseMaterial* GetRendererMaterial() override {return (BaseMaterial*)mMaterial;}
+    LandscapeMaterial* GetMaterial() {return mMaterial;}
+    void SetMaterial(LandscapeMaterial* const _material) {mMaterial = _material;}
+
+    virtual bool CanBeRendered() const override {return mCanBeRendered;}
+    void SetCanBeRendered(const bool _canBeRendered) {mCanBeRendered = _canBeRendered;}
 
 
 public:
@@ -36,9 +53,13 @@ public:
 
 public:
     Landscape();
+    ~Landscape();
 
 public:
     virtual void Update(const float _deltaTime) override;
+    virtual void ChangeMeshByDistance(Camera* _renderingCamera, float _threshold) override;
+    virtual void Render(Camera* _renderingCamera) override;
+    virtual void CleanRessources() override;
 
 public:
     void ApplyHeightmap(const string& _heightmapPath, const float _maxHeight);
@@ -54,4 +75,6 @@ public:
 
 private:
     void RotateLandscape();
+    void CreateLandscapeMesh();
+    void CreateLandscapeMaterial();
 };

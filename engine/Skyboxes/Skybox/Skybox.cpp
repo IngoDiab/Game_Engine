@@ -1,4 +1,5 @@
 #include "Skybox.h"
+#include "engine/FilesPath/FilesPath.h"
 #include "engine/Skyboxes/Mesh/SkyboxMesh.h"
 #include "engine/Skyboxes/ShaderHandler/SkyboxShaderHandler.h"
 #include "engine/Skyboxes/Material/SkyboxMaterial.h"
@@ -8,7 +9,6 @@ Skybox::Skybox()
 {
     mMesh = new SkyboxMesh();
     mMaterial = new SkyboxMaterial(SKYBOX_VERTEX, SKYBOX_FRAG);
-    mMaterial->Initialize();
 }
 
 Skybox::~Skybox()

@@ -37,6 +37,10 @@ T* ObjectManager::Create(const vec3& _position, const vec3& _rotation, const vec
         delete _object;
         return nullptr;
     }
+
+    IRenderable* _gameobjectRenderable = dynamic_cast<IRenderable*>(_gameobject);
+    if(_gameobjectRenderable) Renderer::Instance()->AddRenderable(_gameobjectRenderable);
+
     _gameobject->SetPosition(_position);
     _gameobject->SetRotation(_rotation);
     _gameobject->SetScale(_scale);

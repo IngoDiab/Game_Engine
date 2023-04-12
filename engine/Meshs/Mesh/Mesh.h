@@ -1,10 +1,13 @@
 #pragma once
 
 #include <vector>
+#include <string>
 using namespace std;
 
 #include <glm/glm.hpp>
 using namespace glm;
+
+#include <assimp/scene.h>
 
 #include "engine/Buffers/VBO/VBO.h"
 
@@ -12,8 +15,8 @@ enum class VERTEX_ATTRIBUTE
 {
     VERTEX_POSITION = 0,
     VERTEX_UVS = 1,
-    VERTEX_INDICES = 2,
-    //VERTEX_TRIANGLES = 3 //(?)
+    VERTEX_NORMALE = 2,
+    VERTEX_INDICES = 3
 };
 
 struct Triangle
@@ -40,6 +43,9 @@ protected:
     vector<vec2> mUVs = vector<vec2>();
     VBO mUVsVBO = VBO(GL_ARRAY_BUFFER);
 
+    vector<vec3> mNormales = vector<vec3>();
+    VBO mNormalVBO = VBO(GL_ARRAY_BUFFER);
+
     vector<unsigned short> mIndices = vector<unsigned short>();
     VBO mIndicesVBO = VBO(GL_ELEMENT_ARRAY_BUFFER);
 
@@ -47,16 +53,23 @@ protected:
 
 public:
     Mesh();
+    Mesh(const string& _pathMesh);
     virtual ~Mesh();
     Mesh(const vector<vec3>& _positions, const vector<vec2>& _uvs, const vector<unsigned short>& _indices, const std::vector<Triangle>& _triangles);
 
 protected:
     void RefreshVBOData(const VERTEX_ATTRIBUTE _vbo);
 
-    virtual void CreateVerticesPositions() = 0;
-    virtual void CreateVerticesUVs() = 0;
-    virtual void CreateIndices() = 0;
+    void ClearMeshBuffers();
+    virtual void CreateVerticesPositions();
+    virtual void CreateVerticesUVs();
+    virtual void CreateIndices();
+    virtual void CreateVerticesNormales();
 
 public:
     void DrawMesh();
+
+private:
+    void CreateMeshLoaded(aiMesh* _loadedMesh);
+    void LoadMeshAssimp(const string& _pathMesh);
 };

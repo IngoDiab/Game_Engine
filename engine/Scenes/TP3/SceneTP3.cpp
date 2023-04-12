@@ -1,9 +1,12 @@
 #include "SceneTP3.h"
+#include "engine/FilesPath/FilesPath.h"
 #include "engine/Character/Character.h"
 #include "engine/Landscape/Landscape/Landscape.h"
+#include "engine/Landscape/Material/LandscapeMaterial.h"
 #include "engine/Skyboxes/Skybox/Skybox.h"
 #include "engine/Inputs/InputManager/InputManager.h"
 #include "engine/Camera/EditorCamera/EditorCamera.h"
+#include "engine/Components/MeshComponent/MeshComponent.h"
 #include "engine/Engine/Engine.h"
 
 void SceneTP3::LoadScene()
@@ -25,15 +28,29 @@ Character* SceneTP3::CreateCharacter()
 {
     ObjectManager* _objectManager = ObjectManager::Instance();
     Character* _character = _objectManager->Create<Character>(vec3(0,100,0));
+
+    MeshComponent* _meshComponent = _character->GetComponent<MeshComponent>();
+    _meshComponent->GetTransformInstance()->RotateLocalAxisX(90);
+
+    Material* _material = _meshComponent->GetMaterial();
+    _material->SetTexture(TEXTURE_SLOT::ALBEDO, "Textures/2D/DamagedHelmet/albedo.jpg");
     return _character;
 }
 
 Landscape* SceneTP3::CreateLandscape()
 {
     ObjectManager* _objectManager = ObjectManager::Instance();
-    Landscape* _landscape = _objectManager->Create<Landscape>();
+    Landscape* _landscape = _objectManager->Create<Landscape>(vec3(0), vec3(0), vec3(200,1,200));
     _landscape->ChangeResolution(2,2);
     _landscape->ApplyHeightmap("Textures/Heightmaps/height_test.png",100);
+
+    LandscapeMaterial* _landscapeMaterial= _landscape->GetMaterial();
+    _landscapeMaterial->AddLayer(0, GRASS_TEXTURE);
+    _landscapeMaterial->AddLayer(1, ROCK_TEXTURE);
+    _landscapeMaterial->AddLayer(2, SNOWROCKS_TEXTURE);
+
+    _landscapeMaterial->AddTransition(0, 50);
+    _landscapeMaterial->AddTransition(1, 80);
     return _landscape;
 }
 

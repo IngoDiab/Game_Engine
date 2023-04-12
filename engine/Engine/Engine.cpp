@@ -15,6 +15,7 @@ void Engine::Initialize(const int _widthWindow, const int _heightWindow, const s
     mMainWindow = new Window(_widthWindow, _heightWindow, _nameWindow.c_str(), NULL, NULL, _colorBackground);
     mMainWindow->ActivateInput(GLFW_STICKY_KEYS, GL_TRUE);
     mMainWindow->EnableDepth(true);
+    //mMainWindow->EnableCullFace(true);
 
     mSkybox = new Skybox();
 

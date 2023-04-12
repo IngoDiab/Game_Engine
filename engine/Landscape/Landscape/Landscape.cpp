@@ -1,15 +1,18 @@
 #include "Landscape.h"
 #include "engine/Engine/Engine.h"
-#include "engine/Components/MeshComponent/MeshComponent.h"
 #include "engine/Landscape/Mesh/LandscapeMesh.h"
 #include "engine/Landscape/Material/LandscapeMaterial.h"
-#include "engine/Utils/TextureLoader/TextureLoader.h"
+#include "engine/ShaderHandlers/BaseShaderHandler/BaseShaderHandler.h"
 
 Landscape::Landscape()
 {
-    mMeshComponent = AddComponent<MeshComponent>(vec3(0), vec3(0), vec3(200,1,200));
-    mMeshRef = mMeshComponent->CreateMesh<LandscapeMesh>();
-    mMaterialRef = mMeshComponent->CreateMaterial<LandscapeMaterial>();
+    CreateLandscapeMesh();
+    CreateLandscapeMaterial();
+}
+
+Landscape::~Landscape()
+{
+    CleanRessources();
 }
 
 void Landscape::Update(const float _deltaTime)
@@ -18,44 +21,75 @@ void Landscape::Update(const float _deltaTime)
     RotateLandscape();
 }
 
+void Landscape::ChangeMeshByDistance(Camera* _renderingCamera, float _threshold)
+{
+    double _distanceCamera = length(_renderingCamera->GetWorldPosition()-mTransform.GetTransformData()->mWorldPosition);
+    for(pair<double,LandscapeMesh*> _pair : mLODS)
+    {
+        double _distanceRequired = _pair.first;
+        if(_distanceRequired+_threshold >= _distanceCamera) return;
+        mMesh = _pair.second;
+    }
+}
+
+void Landscape::Render(Camera* _renderingCamera)
+{
+    //Calculate MVP
+    const mat4& _modelMatrix = mTransform.GetModelMatrix();
+    const mat4& _viewMatrix = _renderingCamera->GetViewMatrix();
+    const mat4& _projMatrix = _renderingCamera->GetProjectionMatrix();
+
+    //Use Material
+    glUseProgram(mMaterial->GetShader()->GetShaderHandler());
+    mMaterial->UseMaterial(GL_TEXTURE_2D, _modelMatrix, _viewMatrix, _projMatrix);
+
+    //Draw
+    ChangeMeshByDistance(_renderingCamera, 25);
+    mMesh->DrawMesh();
+}
+
+void Landscape::CleanRessources()
+{
+    delete mMesh;
+    delete mMaterial;
+}
+
 void Landscape::ApplyHeightmap(const string& _heightmapPath, const float _maxHeight)
 {
     if(mHeightmap) freeImage(mHeightmap);
     mMaxHeight = _maxHeight;
 	int channels = 1;
     mHeightmap = loadImage(_heightmapPath, mWidthImage, mHeightImage, channels, 1);
-    mMaterialRef->SetHeightmap(_heightmapPath, _maxHeight);
-    //if(mMeshLandscape) mMeshLandscape->ApplyHeightmap(_image, _maxHeight, widthImage, heightImage, mTransform.GetScale().y);
+    mMaterial->SetHeightmap(_heightmapPath, _maxHeight);
 }
 
 void Landscape::ChangeResolution(const int _nbVertexWidth, const int _nbVertexLength)
 {
-    if(!mMeshRef) return;
-    mMeshRef->ChangeResolution(_nbVertexWidth, _nbVertexLength);
-    //ReApplyHeightmap(mMeshLandscape);
+    if(!mMesh) return;
+    mMesh->ChangeResolution(_nbVertexWidth, _nbVertexLength);
 }
 
 void Landscape::IncreaseResolution(const bool _increase)
 {
-    if(!_increase || !mMeshRef) return;
-    mMeshRef->ChangeResolution(1);
-    //ReApplyHeightmap(mMeshLandscape);
+    if(!_increase || !mMesh) return;
+    mMesh->ChangeResolution(1);
 }
 
 void Landscape::DecreaseResolution(const bool _decrease)
 {
-    if(!_decrease || !mMeshRef) return;
-    mMeshRef->ChangeResolution(-1);
-    //ReApplyHeightmap(mMeshLandscape);
+    if(!_decrease || !mMesh) return;
+    mMesh->ChangeResolution(-1);
 }
 
 //TODO REFACTOR
 void Landscape::GetProjectionOnPlane(vec3& _pointToProject)
 {
-    if(!mMeshRef) return;
-    vec4 _origineWorld4 = mMeshComponent->GetTransformInstance()->GetModelMatrix() * vec4(mMeshRef->GetPositonVertex(0,0, true, true),1);
-    vec4 _cornerUWorld4 = mMeshComponent->GetTransformInstance()->GetModelMatrix() * vec4(mMeshRef->GetPositonVertex(1,0, true, true),1);
-    vec4 _cornerVWorld4 = mMeshComponent->GetTransformInstance()->GetModelMatrix() * vec4(mMeshRef->GetPositonVertex(0,1, true, true),1);
+    if(!mMesh) return;
+    mat4 _modelMatrix = mTransform.GetModelMatrix();
+
+    vec4 _origineWorld4 = _modelMatrix * vec4(mMesh->GetPositonVertex(0,0, true, true),1);
+    vec4 _cornerUWorld4 = _modelMatrix * vec4(mMesh->GetPositonVertex(1,0, true, true),1);
+    vec4 _cornerVWorld4 = _modelMatrix * vec4(mMesh->GetPositonVertex(0,1, true, true),1);
 
     vec4 _u4 = _cornerUWorld4-_origineWorld4;
     vec3 _uVector = vec3(_u4.x, _u4.y, _u4.z);
@@ -79,10 +113,10 @@ void Landscape::GetProjectionOnPlane(vec3& _pointToProject)
     
     vec2 _uv = UV(_resultPos-_origineWorld, _uVector, _vVector);
 
-    vec4 _bottomLeft4 = mMeshComponent->GetTransformInstance()->GetModelMatrix() * vec4(mMeshRef->GetPositonVertex(_uv.x,_uv.y, false, false),1);
-    vec4 _bottomRight4 = mMeshComponent->GetTransformInstance()->GetModelMatrix() * vec4(mMeshRef->GetPositonVertex(_uv.x,_uv.y, true, false),1);
-    vec4 _upLeft4 = mMeshComponent->GetTransformInstance()->GetModelMatrix() * vec4(mMeshRef->GetPositonVertex(_uv.x,_uv.y, false, true),1);
-    vec4 _upRight4 = mMeshComponent->GetTransformInstance()->GetModelMatrix() * vec4(mMeshRef->GetPositonVertex(_uv.x,_uv.y, true, true),1);
+    vec4 _bottomLeft4 = _modelMatrix * vec4(mMesh->GetPositonVertex(_uv.x,_uv.y, false, false),1);
+    vec4 _bottomRight4 = _modelMatrix * vec4(mMesh->GetPositonVertex(_uv.x,_uv.y, true, false),1);
+    vec4 _upLeft4 = _modelMatrix * vec4(mMesh->GetPositonVertex(_uv.x,_uv.y, false, true),1);
+    vec4 _upRight4 = _modelMatrix * vec4(mMesh->GetPositonVertex(_uv.x,_uv.y, true, true),1);
 
     vec3 _bottomLeft = vec3(_bottomLeft4.x, _bottomLeft4.y, _bottomLeft4.z);
     vec3 _bottomRight = vec3(_bottomRight4.x, _bottomRight4.y, _bottomRight4.z);
@@ -92,18 +126,18 @@ void Landscape::GetProjectionOnPlane(vec3& _pointToProject)
     float _u0, _u1, _u2;
     if(InTriangle(_resultPos, _bottomLeft, _bottomRight, _upRight, _u0, _u1, _u2))
     {
-        vec2 _bottomLeftUV = mMeshRef->GetUVVertex(_uv.x,_uv.y, false, false);
-        vec2 _bottomRightUV = mMeshRef->GetUVVertex(_uv.x,_uv.y, true, false);
-        vec2 _upRightUV = mMeshRef->GetUVVertex(_uv.x,_uv.y, true, true);
+        vec2 _bottomLeftUV = mMesh->GetUVVertex(_uv.x,_uv.y, false, false);
+        vec2 _bottomRightUV = mMesh->GetUVVertex(_uv.x,_uv.y, true, false);
+        vec2 _upRightUV = mMesh->GetUVVertex(_uv.x,_uv.y, true, true);
 
         double _height = _u0*TexelByUV(_bottomLeftUV)+_u1*TexelByUV(_bottomRightUV)+_u2*TexelByUV(_upRightUV);
         _pointToProject = _resultPos + vec3(0,_height+10,0);
     }
     else if(InTriangle(_resultPos, _bottomLeft, _upRight, _upLeft, _u0, _u1, _u2))
     {
-        vec2 _bottomLeftUV = mMeshRef->GetUVVertex(_uv.x,_uv.y, false, false);
-        vec2 _upRightUV = mMeshRef->GetUVVertex(_uv.x,_uv.y, true, true);
-        vec2 _upLeftUV = mMeshRef->GetUVVertex(_uv.x,_uv.y, false, true);
+        vec2 _bottomLeftUV = mMesh->GetUVVertex(_uv.x,_uv.y, false, false);
+        vec2 _upRightUV = mMesh->GetUVVertex(_uv.x,_uv.y, true, true);
+        vec2 _upLeftUV = mMesh->GetUVVertex(_uv.x,_uv.y, false, true);
 
         double _height = _u0*TexelByUV(_bottomLeftUV)+_u1*TexelByUV(_upRightUV)+_u2*TexelByUV(_upLeftUV);
         _pointToProject = _resultPos + vec3(0,_height+10,0);
@@ -175,5 +209,23 @@ double Landscape::TexelByUV(const vec2& _uv)
 void Landscape::RotateLandscape()
 {
     if(!mCanRotate)return;
-    mMeshComponent->GetTransformInstance()->RotateLocalAxisY(mRotateSpeed*Engine::Instance()->DeltaTime());
+    mTransform.RotateLocalAxisY(mRotateSpeed*Engine::Instance()->DeltaTime());
+}
+
+void Landscape::CreateLandscapeMesh()
+{
+    mMesh = new LandscapeMesh();
+    for(pair<double,LandscapeMesh*> _pair : mLODS)
+    {
+        delete _pair.second;
+    }
+    mLODS.clear();
+
+    mLODS[0] = mMesh;
+}
+
+void Landscape::CreateLandscapeMaterial()
+{
+    if(mMaterial) delete mMaterial;
+    mMaterial = new LandscapeMaterial();
 }

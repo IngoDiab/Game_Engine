@@ -9,6 +9,11 @@ using namespace std;
 #include "engine/ShaderHandlers/ShaderHandler/ShaderHandler.h"
 #include "engine/Camera/Camera/Camera.h"
 
+MeshComponent::~MeshComponent()
+{
+    CleanRessources();
+}
+
 void MeshComponent::ChangeMeshByDistance(Camera* _renderingCamera, float _threshold)
 {
     double _distanceCamera = length(_renderingCamera->GetWorldPosition()-mTransform.GetTransformData()->mWorldPosition);
@@ -40,10 +45,4 @@ void MeshComponent::CleanRessources()
 {
     delete mMesh;
     delete mMaterial;
-}
-
-void MeshComponent::ChangeTextureMaterial(const int _textureSlot, const string& _texturePath)
-{
-    if(!mMaterial) return;
-    mMaterial->LoadTexture(_textureSlot, _texturePath);
 }

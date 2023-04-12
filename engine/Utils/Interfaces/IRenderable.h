@@ -4,25 +4,14 @@ using namespace std;
 
 class Mesh;
 class Camera;
-class Material;
+class BaseMaterial;
 
 class IRenderable
 {
-protected:
-    Mesh* mMesh = nullptr;
-    map<double, Mesh*> mLODS = map<double, Mesh*>();
-    Material* mMaterial = nullptr;
-    bool mCanBeRendered = true;
-
 public:
-    Mesh* GetMesh(){return mMesh;}
-    void SetMesh(Mesh* const _mesh){mMesh = _mesh;}
-
-    Material* GetMaterial(){return mMaterial;}
-    void SetMaterial(Material* const _material){mMaterial = _material;}
-
-    bool CanBeRendered() const {return mCanBeRendered;}
-    void SetCanBeRendered(const bool _canBeRendered) {mCanBeRendered = _canBeRendered;}
+    virtual Mesh* GetMesh() = 0;
+    virtual BaseMaterial* GetRendererMaterial() = 0;
+    virtual bool CanBeRendered() const = 0;
 
 public:
     virtual void ChangeMeshByDistance(Camera* _renderingCamera, float _threshold) = 0;

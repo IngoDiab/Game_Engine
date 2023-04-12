@@ -1,22 +1,39 @@
 #include "LandscapeShaderHandler.h"
 #include <GL/glew.h>
 
-LandscapeShaderHandler::LandscapeShaderHandler(const string& _vertexShader, const string& _fragShader) : ShaderHandler(_vertexShader,_fragShader)
+LandscapeShaderHandler::LandscapeShaderHandler(const string& _vertexShader, const string& _fragShader) : BaseShaderHandler(_vertexShader,_fragShader)
 {
 
 }
 
 void LandscapeShaderHandler::Initialize()
 {
-    ShaderHandler::Initialize();
-    GetTextureLocation(0, "mHeightmap");
-    GetTextureLocation(1, "mGrassTex");
-    GetTextureLocation(2, "mRockTex");
-    GetTextureLocation(3, "mSnowrockTex");
+    BaseShaderHandler::Initialize();
 
-    GetNumericalLocation("mHeightGrassRock");
-    GetNumericalLocation("mHeightRockSnow");
-    GetNumericalLocation("mTransitionThreshold");
-    GetNumericalLocation("mTiling");
-    GetNumericalLocation("mMaxHeight");
+    //Get heightmap handler
+    GetTextureLocation(mHeightmapHandler, "mHeightmap");
+
+    //Get height handler
+    GetUniformLocation(mHeightHandler, "mHeight");
+
+    //Get layers handler
+    unsigned int _nbLayers = mLayersHandlers.size();
+    for(unsigned int _layerSlot = 0; _layerSlot<_nbLayers; ++_layerSlot)
+        GetTextureLocation(mLayersHandlers[_layerSlot], "mLayer"+to_string(_layerSlot));
+
+    //Get transitions handler
+    unsigned int _nbTransition = mHeightsTransitionHandlers.size();
+    for(unsigned int _layerTransition = 0; _layerTransition<_nbTransition; ++_layerTransition)
+        GetUniformLocation(mHeightsTransitionHandlers[_layerTransition], "mTransition"+to_string(_layerTransition)+"_"+to_string(_layerTransition+1));
+
+    //Get TransitionThreshold handler
+    GetUniformLocation(mTransitionThresholdHandler, "mTransitionThreshold");
+
+    //Get tiling handler
+    GetUniformLocation(mTilingHandler, "mTiling");
+}
+
+void LandscapeShaderHandler::SendHeightmap(unsigned int _heightMap)
+{
+
 }
