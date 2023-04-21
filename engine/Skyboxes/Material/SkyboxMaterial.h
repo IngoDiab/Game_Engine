@@ -18,7 +18,7 @@ public:
     SkyboxMaterial(const string& _vertexShader, const string& _fragShader);
 
 public:
-    virtual void UseMaterial(const int _typeTexture, const mat4& _model, const mat4& _view, const mat4& _proj) override;
+    virtual void UseMaterial(const mat4& _model, const mat4& _view, const mat4& _proj) override;
 
 public:
     void ChangeSkyboxTextures(const string _path, const string _format);

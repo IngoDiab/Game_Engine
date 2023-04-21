@@ -23,9 +23,9 @@ void Material::Initialize()
     mCoeffs[(int)COEFF_SLOT::TILING] = 1;
 }
 
-void Material::UseMaterial(const int _typeTexture, const mat4& _model, const mat4& _view, const mat4& _proj)
+void Material::UseMaterial(const mat4& _model, const mat4& _view, const mat4& _proj)
 {
-    BaseMaterial::UseMaterial(_typeTexture, _model, _view, _proj);
+    BaseMaterial::UseMaterial(_model, _view, _proj);
 
     unsigned int _nbColors = mColors.size();
     for(int _colorSlot = 0; _colorSlot<_nbColors; ++_colorSlot)
@@ -33,7 +33,7 @@ void Material::UseMaterial(const int _typeTexture, const mat4& _model, const mat
 
     unsigned int _nbTextures = mTextures.size();
     for(int _textureSlot = 0; _textureSlot<_nbTextures; ++_textureSlot)
-        mShaderHandler->SendTexture(_typeTexture, _textureSlot, mTextures[_textureSlot], mShaderHandler->GetTexturesHandlers()[_textureSlot]);
+        mShaderHandler->SendTexture(GL_TEXTURE_2D, _textureSlot, mTextures[_textureSlot], mShaderHandler->GetTexturesHandlers()[_textureSlot]);
 
     unsigned int _nbCoeffs = mCoeffs.size();
     for(int _coeffSlot = 0; _coeffSlot<_nbCoeffs; ++_coeffSlot)

@@ -3,11 +3,17 @@
 #include "engine/Landscape/Mesh/LandscapeMesh.h"
 #include "engine/Landscape/Material/LandscapeMaterial.h"
 #include "engine/ShaderHandlers/BaseShaderHandler/BaseShaderHandler.h"
+#include "engine/Physic/BoxCollider/BoxCollider.h"
+#include "engine/Physic/PhysicComponent/PhysicComponent.h"
 
 Landscape::Landscape()
 {
     CreateLandscapeMesh();
     CreateLandscapeMaterial();
+    mBoxCollider = AddComponent<BoxCollider>();
+    mPhysicComponent = AddComponent<PhysicComponent>();
+    mPhysicComponent->EnableGravity(false);
+    mPhysicComponent->SetStatic(true);
 }
 
 Landscape::~Landscape()
@@ -34,6 +40,8 @@ void Landscape::ChangeMeshByDistance(Camera* _renderingCamera, float _threshold)
 
 void Landscape::Render(Camera* _renderingCamera)
 {
+    if(!mCanBeRendered) return;
+    
     //Calculate MVP
     const mat4& _modelMatrix = mTransform.GetModelMatrix();
     const mat4& _viewMatrix = _renderingCamera->GetViewMatrix();
@@ -41,7 +49,7 @@ void Landscape::Render(Camera* _renderingCamera)
 
     //Use Material
     glUseProgram(mMaterial->GetShader()->GetShaderHandler());
-    mMaterial->UseMaterial(GL_TEXTURE_2D, _modelMatrix, _viewMatrix, _projMatrix);
+    mMaterial->UseMaterial(_modelMatrix, _viewMatrix, _projMatrix);
 
     //Draw
     ChangeMeshByDistance(_renderingCamera, 25);

@@ -21,20 +21,27 @@ GameObject::GameObject(const vec3& _positions, const vec3& _rotations, const vec
 void GameObject::Update(const float _tickSpeed)
 {
     mTransform.Update(_tickSpeed);
-    for(Component* _component : mComponents)
-        _component->Update(_tickSpeed);
-    for(GameObject* _child : mChildren)
-        _child->Update(_tickSpeed);
-}
-
-void GameObject::UpdateModelMatrix()
-{
     mTransform.UpdateModelMatrix();
     for(Component* _component : mComponents)
+    {
+        _component->Update(_tickSpeed);
         _component->UpdateModelMatrix();
+    }
     for(GameObject* _child : mChildren)
-        _child->UpdateModelMatrix();
+    {
+        _child->Update(_tickSpeed);
+        //_child->UpdateModelMatrix();
+    }
 }
+
+// void GameObject::UpdateModelMatrix()
+// {
+//     // mTransform.UpdateModelMatrix();
+//     // for(Component* _component : mComponents)
+//     //     _component->UpdateModelMatrix();
+//     // for(GameObject* _child : mChildren)
+//     //     _child->UpdateModelMatrix();
+// }
 
 void GameObject::LateUpdate(const float _tickSpeed)
 {

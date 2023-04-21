@@ -11,6 +11,9 @@
 #define PHONG_VERTEX "Shaders/Phong/Phong_vertex.glsl"
 #define PHONG_FRAG "Shaders/Phong/Phong_frag.glsl"
 
+#define COLLIDER_VERTEX "Shaders/Debug/Colliders/Collider_vertex.glsl"
+#define COLLIDER_FRAG "Shaders/Debug/Colliders/Collider_frag.glsl"
+
 #define SPACE_SKYBOX "Textures/Skybox/Space4K/"
 
 #define GRASS_TEXTURE "Textures/2D/grass.png"

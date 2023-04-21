@@ -13,6 +13,7 @@ using namespace std;
 #include "engine/Utils/Interfaces/IRenderable.h"
 #include "engine/Physic/PhysicComponent/PhysicComponent.h"
 #include "engine/Components/Component/Component.h"
+#include "engine/Physic/Collider/Collider.h"
 
 class Camera;
 class Scene;
@@ -58,7 +59,7 @@ public:
 
 public:
     virtual void Update(const float _tickSpeed) override;
-    void UpdateModelMatrix();
+    //void UpdateModelMatrix();
     virtual void LateUpdate(const float _tickSpeed) override;
 
     Scene* GetWorld();
@@ -106,11 +107,17 @@ T* GameObject::AddComponent(const vec3& _position, const vec3& _rotation, const 
     _component->SetRotation(_rotation);
     _component->SetScale(_scale);
 
+    _component->PostConstructor();
+
     IRenderable* _componentRenderable = dynamic_cast<IRenderable*>(_object);
     if(_componentRenderable) Renderer::Instance()->AddRenderable(_componentRenderable);
 
     PhysicComponent* _componentPhysic = dynamic_cast<PhysicComponent*>(_object);
-    if(_componentPhysic) PhysicManager::Instance()->AddPhysicComponent(_componentPhysic);
+    if(_componentPhysic) 
+    {
+        PhysicManager::Instance()->AddPhysicComponent(_componentPhysic);
+        _componentPhysic->SetReadyToCollide(true);
+    }
 
     return _object;
 }

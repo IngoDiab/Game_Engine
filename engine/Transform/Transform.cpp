@@ -88,7 +88,7 @@ void Transform::Draw3DAxis()
     //Use Material
     glUseProgram(mMaterial->GetShader()->GetShaderHandler());
     const mat4 _transformModel = GetWorldTransRotaMatrix() * scale(mat4(1.0), mScaleMesh);
-    mMaterial->UseMaterial(GL_TEXTURE_2D, _transformModel, _viewMatrix, _projMatrix);
+    mMaterial->UseMaterial(_transformModel, _viewMatrix, _projMatrix);
 
     //Draw
     mMesh->DrawMesh();

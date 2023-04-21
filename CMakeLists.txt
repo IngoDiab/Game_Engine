@@ -134,6 +134,12 @@ add_executable(engine
 	
 	engine/Physic/Collider/Collider.h
 	engine/Physic/Collider/Collider.cpp
+	engine/Physic/BoxCollider/BoxCollider.h
+	engine/Physic/BoxCollider/BoxCollider.cpp
+	engine/Physic/SphereCollider/SphereCollider.h
+	engine/Physic/SphereCollider/SphereCollider.cpp
+	engine/Physic/CollisionData/CollisionData.h
+	engine/Physic/CollisionData/CollisionData.cpp
 	engine/Physic/PhysicComponent/PhysicComponent.h
 	engine/Physic/PhysicComponent/PhysicComponent.cpp
 	engine/Physic/PhysicManager/PhysicManager.h
@@ -155,6 +161,8 @@ add_executable(engine
 	engine/Scenes/TP2/SceneTP2.cpp
 	engine/Scenes/TP3/SceneTP3.h
 	engine/Scenes/TP3/SceneTP3.cpp
+	engine/Scenes/TP4/SceneTP4.h
+	engine/Scenes/TP4/SceneTP4.cpp
 	
 	engine/ShaderHandlers/BaseShaderHandler/BaseShaderHandler.h
 	engine/ShaderHandlers/BaseShaderHandler/BaseShaderHandler.cpp
@@ -183,6 +191,7 @@ add_executable(engine
 	engine/Transform/Shader/Transform_frag.glsl
 	engine/Transform/Shader/Transform_vertex.glsl
 	
+	engine/Utils/Printer/Printer.h
 	engine/Utils/Singleton/Singleton.h
 	engine/Utils/TextureLoader/TextureLoader.h
 	engine/Utils/TextureLoader/TextureLoader.cpp

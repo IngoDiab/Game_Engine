@@ -3,6 +3,7 @@
 #include "engine/Scenes/TP1/SceneTP1.h"
 #include "engine/Scenes/TP2/SceneTP2.h"
 #include "engine/Scenes/TP3/SceneTP3.h"
+#include "engine/Scenes/TP4/SceneTP4.h"
 
 #include <iostream>
 using namespace std;
@@ -26,7 +27,10 @@ int main(int argc, char** argv)
     SceneTP3 _sceneTP3 = SceneTP3();
     _sceneManager->AddScene("TP3",&_sceneTP3);
 
-    _sceneManager->LoadScene("TP2");
+    SceneTP4 _sceneTP4 = SceneTP4();
+    _sceneManager->AddScene("TP4",&_sceneTP4);
+
+    _sceneManager->LoadScene("TP4");
     _engine.Run();
     return 0;
 }

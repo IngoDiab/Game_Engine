@@ -9,6 +9,7 @@ class Sphere : public Mesh
 
 public:
     Sphere();
+    Sphere(const bool _generatePos, const bool _generateUV, const bool _generateIndices, const bool _generateNormales);
     Sphere(const int _nbVertexAzimut, const int _nbVertexElevation);
     
 protected:

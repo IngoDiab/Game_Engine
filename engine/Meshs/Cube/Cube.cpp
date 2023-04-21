@@ -5,11 +5,37 @@ Cube::Cube() : Mesh()
     CreateCube();
 }
 
+Cube::Cube(const bool _generatePos, const bool _generateUV, const bool _generateIndices, const bool _generateNormales) : Mesh()
+{
+    CreateCube(_generatePos, _generateUV, _generateIndices, _generateNormales);
+}
+
+vector<vec3> Cube::ModelPositions() const
+{
+    return vector<vec3>() = 
+    {
+        #pragma region Face Bottom
+        vec3(-0.5,-0.5,-0.5), //LeftBotFar
+        vec3(0.5,-0.5,-0.5), //RightBotFar
+        vec3(-0.5,-0.5,0.5), //LeftBotNear
+        vec3(0.5,-0.5,0.5), //RightBotNear
+        #pragma endregion
+
+        #pragma region Face Top
+        vec3(0.5,0.5,-0.5), //RightTopFar
+        vec3(-0.5,0.5,-0.5), //LeftTopFar
+        vec3(0.5,0.5,0.5), //RightTopNear
+        vec3(-0.5,0.5,0.5), //LeftTopNear
+        #pragma endregion
+    };
+}
+
 void Cube::CreateCube(const bool _generatePos, const bool _generateUV, const bool _generateIndices, const bool _generateNormales)
 {
     if(_generatePos)
     {
-        CreateVerticesPositions();
+        if(_generateUV) CreateVerticesPositions();
+        else CreateVerticesPositionsPacked();
         RefreshVBOData(VERTEX_ATTRIBUTE::VERTEX_POSITION);
     }
 
@@ -21,7 +47,8 @@ void Cube::CreateCube(const bool _generatePos, const bool _generateUV, const boo
 
     if(_generateIndices)
     {
-        CreateIndices();
+        if(_generateUV) CreateIndices();
+        else CreateIndicesPacked();
         RefreshVBOData(VERTEX_ATTRIBUTE::VERTEX_INDICES);
     }
 
@@ -76,6 +103,27 @@ void Cube::CreateVerticesPositions()
         vec3(-0.5,0.5,-0.5), //LeftTopFar
         vec3(-0.5,-0.5,-0.5), //LeftBotFar
         vec3(-0.5,-0.5,0.5), //LeftBotNear
+        vec3(-0.5,0.5,0.5), //LeftTopNear
+        #pragma endregion
+    };
+}
+
+void Cube::CreateVerticesPositionsPacked()
+{
+    mPositions.clear();
+    mPositions = 
+    {
+        #pragma region Face Bottom
+        vec3(-0.5,-0.5,-0.5), //LeftBotFar
+        vec3(0.5,-0.5,-0.5), //RightBotFar
+        vec3(-0.5,-0.5,0.5), //LeftBotNear
+        vec3(0.5,-0.5,0.5), //RightBotNear
+        #pragma endregion
+
+        #pragma region Face Top
+        vec3(0.5,0.5,-0.5), //RightTopFar
+        vec3(-0.5,0.5,-0.5), //LeftTopFar
+        vec3(0.5,0.5,0.5), //RightTopNear
         vec3(-0.5,0.5,0.5), //LeftTopNear
         #pragma endregion
     };
@@ -168,10 +216,47 @@ void Cube::CreateIndices()
     };
 }
 
+void Cube::CreateIndicesPacked()
+{
+    mIndices.clear();
+    mIndices =
+    {
+        #pragma region Face Bottom
+        2, 1, 0,
+        2, 3, 1,
+        #pragma endregion
+
+        #pragma region Face Top
+        6, 5, 4,
+        6, 7, 5,
+        #pragma endregion
+
+        #pragma region Face Front
+        7, 3, 2,
+        7, 6, 3,
+        #pragma endregion
+
+        #pragma region Face Back
+        5, 0, 4,
+        0, 1, 4,
+        #pragma endregion
+
+        #pragma region Face Right
+        1, 3, 4,
+        3, 6, 4,
+        #pragma endregion
+
+        #pragma region Face Left
+        2, 0, 5,
+        7, 2, 5,
+        #pragma endregion
+    };
+}
+
 void Cube::CreateVerticesNormales()
 {
     mNormales.clear();
-    mNormales.resize(24);
+    mNormales.resize(mPositions.size());
 
     vector<unsigned int> _neighboors = vector<unsigned int>(mPositions.size());
     unsigned int _nbIndices = mIndices.size();

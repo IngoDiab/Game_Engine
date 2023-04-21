@@ -5,6 +5,11 @@ Sphere::Sphere() : Mesh()
     CreateSphere();
 }
 
+Sphere::Sphere(const bool _generatePos, const bool _generateUV, const bool _generateIndices, const bool _generateNormales) : Mesh(), mNbVertexAzimut(20), mNbVertexElevation(20)
+{
+    CreateSphere(_generatePos, _generateUV, _generateIndices, _generateNormales);
+}
+
 Sphere::Sphere(const int _nbVertexAzimut, const int _nbVertexElevation) : mNbVertexAzimut(_nbVertexAzimut), mNbVertexElevation(_nbVertexElevation)
 {
     CreateSphere();

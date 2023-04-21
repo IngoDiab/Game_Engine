@@ -7,7 +7,8 @@ in vec3 o_normale;
 
 out vec4 FragColor;
 
-void main(){
+void main()
+{
         vec4 _texelAlbedo = texture(mAlbedo, o_uv);
         FragColor = _texelAlbedo;
 }

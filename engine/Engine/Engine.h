@@ -47,6 +47,7 @@ public:
 
 public:
     Engine();
+    ~Engine();
 
 public:
     void Initialize(const int _widthWindow, const int _heightWindow, const string& _nameWindow);

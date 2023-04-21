@@ -52,6 +52,10 @@ protected:
     std::vector<Triangle> mTriangles;
 
 public:
+    vector<vec3> GetPositionsVertices() const {return mPositions;}
+    void SetPositionsVertices(const vector<vec3>& _positions) {mPositions = _positions; RefreshVBOData(VERTEX_ATTRIBUTE::VERTEX_POSITION);}
+
+public:
     Mesh();
     Mesh(const string& _pathMesh);
     virtual ~Mesh();

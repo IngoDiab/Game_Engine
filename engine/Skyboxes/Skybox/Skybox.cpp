@@ -25,7 +25,7 @@ void Skybox::Draw(Camera* _renderingCamera)
 
     //Use Material
     glUseProgram(mMaterial->GetShader()->GetShaderHandler());
-    mMaterial->UseMaterial(GL_TEXTURE_CUBE_MAP, mat4(1.0), _viewMatrix, _projMatrix);
+    mMaterial->UseMaterial(mat4(1.0), _viewMatrix, _projMatrix);
 
     //Draw
     mMesh->DrawMesh();

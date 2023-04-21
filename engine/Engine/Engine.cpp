@@ -9,6 +9,12 @@
 Engine::Engine()
 {}
 
+Engine::~Engine()
+{
+    delete mSkybox;
+    delete mMainWindow;
+}
+
 void Engine::Initialize(const int _widthWindow, const int _heightWindow, const string& _nameWindow)
 {
     const vector<float> _colorBackground = vector<float>{0.8f, 0.8f, 0.8f, 1.0f};
@@ -38,7 +44,7 @@ void Engine::Run()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         mSceneManager.UpdateCurrentScene(mDeltaTime);
-        mPhysicManager.UpdatePhysic();
+        mPhysicManager.UpdatePhysic(mDeltaTime);
         mSceneManager.DrawCurrentScene(mActiveCamera, mMainWindow);
 
         // Swap buffers

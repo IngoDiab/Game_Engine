@@ -22,7 +22,7 @@ public:
 public:
     virtual void DeleteTexture(unsigned int& _texture);
 
-    virtual void UseMaterial(const int _typeTexture, const mat4& _model, const mat4& _view, const mat4& _proj);
+    virtual void UseMaterial(const mat4& _model, const mat4& _view, const mat4& _proj);
 
     void LoadTexture(unsigned int& _textureSlot, const string& _texturePath);
 };

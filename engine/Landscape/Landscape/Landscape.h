@@ -7,13 +7,11 @@ using namespace std;
 class LandscapeMesh;
 class LandscapeMaterial;
 class MeshComponent;
+class BoxCollider;
+class PhysicComponent;
 
 class Landscape : public GameObject, public IRenderable
 {
-    //MeshComponent* mMeshComponent = nullptr;
-    // LandscapeMesh* mMeshRef= nullptr;
-    // LandscapeMaterial* mMaterialRef = nullptr;
-
     unsigned char* mHeightmap = nullptr;
     int mWidthImage = 0;
 	int mHeightImage = 0;
@@ -27,6 +25,9 @@ protected:
     map<double, LandscapeMesh*> mLODS = map<double, LandscapeMesh*>();
     LandscapeMaterial* mMaterial = nullptr;
     bool mCanBeRendered = true;
+
+    BoxCollider* mBoxCollider = nullptr;
+    PhysicComponent* mPhysicComponent = nullptr;
 
 public:
     virtual Mesh* GetMesh() override {return (Mesh*)mMesh;}

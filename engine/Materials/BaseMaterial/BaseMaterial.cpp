@@ -7,7 +7,7 @@ void BaseMaterial::DeleteTexture(unsigned int& _texture)
     glDeleteTextures(1, &_texture);
 }
 
-void BaseMaterial::UseMaterial(const int _typeTexture, const mat4& _model, const mat4& _view, const mat4& _proj)
+void BaseMaterial::UseMaterial(const mat4& _model, const mat4& _view, const mat4& _proj)
 {
     mShader->SendMVP(_model, _view, _proj);
 }
