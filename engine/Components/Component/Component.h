@@ -8,10 +8,12 @@ class GameObject;
 class Component : public ITickable
 {
 protected:
+    bool mIsDirty = true;
     GameObject* mOwner = nullptr;
     Transform mTransform;
 
 public:
+    bool IsDirty() const {return mIsDirty;}
     GameObject* GetOwner() const {return mOwner;}
 
     Transform* GetTransformInstance() {return &mTransform;}

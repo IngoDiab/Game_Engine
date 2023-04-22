@@ -105,6 +105,9 @@ void PhysicComponent::BounceOnCollide(const vec3& _normal)
     vec3 _incidentVelocity = normalize(mVelocity);
     vec3 _incidentAcceleration = normalize(mAcceleration);
 
+    vec3 _isVelNull = epsilonEqual(mVelocity, vec3(0), MIN_VELOCITY);
+    vec3 _isAccNull = epsilonEqual(mAcceleration, vec3(0), MIN_VELOCITY);
+
     float _dotVelocityNormal = dot(_incidentVelocity, _normal);
     float _dotAccNormal = dot(_incidentAcceleration, _normal);
     
@@ -117,10 +120,13 @@ void PhysicComponent::BounceOnCollide(const vec3& _normal)
         StopAccelVelOnCollide(_normal);
         return;
     }
-        
-    vec3 _bouncedVelocity = normalize(_incidentVelocity - 2*dot(_incidentVelocity, _normal)*_normal);
-    vec3 _bouncedAcceleration = normalize(_incidentAcceleration - 2*dot(_incidentAcceleration, _normal)*_normal);
 
-    mVelocity = _bouncedVelocity * length(mVelocity) * mBounciness;
-    mAcceleration = _bouncedAcceleration * length(mAcceleration) * mBounciness;
+    float _dotIncidentVelNormal = dot(_incidentVelocity, _normal);
+    float _dotIncidentAccNormal = dot(_incidentAcceleration, _normal);
+        
+    vec3 _bouncedVelocity = _dotIncidentVelNormal>=1-IS_AT_SAME_POS ? _incidentVelocity + _incidentVelocity *mBounciness: normalize(_incidentVelocity - 2*dot(_incidentVelocity, _normal)*_normal);
+    vec3 _bouncedAcceleration = _dotIncidentAccNormal>=1-IS_AT_SAME_POS ? _incidentAcceleration + _incidentAcceleration* mBounciness: normalize(_incidentAcceleration - 2*dot(_incidentAcceleration, _normal)*_normal);
+
+    mVelocity = (_isVelNull.x && _isVelNull.y && _isVelNull.z) ? _normal* mBounciness : _bouncedVelocity * length(mVelocity) * mBounciness;
+    mAcceleration = (_isAccNull.x && _isAccNull.y && _isAccNull.z) ? _normal* mBounciness : _bouncedAcceleration * length(mAcceleration) * mBounciness;
 }

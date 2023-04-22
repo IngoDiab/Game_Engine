@@ -52,4 +52,5 @@ private:
 
     void DetectCollisions();
     void ResolveCollisions(const float _deltaTime);
+    void EndProcessCallbacks();
 };

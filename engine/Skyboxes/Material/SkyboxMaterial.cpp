@@ -1,7 +1,5 @@
 #include "SkyboxMaterial.h"
 #include "engine/Skyboxes/ShaderHandler/SkyboxShaderHandler.h"
-#include <iostream>
-using namespace std;
 
 SkyboxMaterial::SkyboxMaterial(){}
 

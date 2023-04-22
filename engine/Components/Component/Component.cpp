@@ -14,7 +14,7 @@ void Component::Update(const float _tickSpeed)
 
 void Component::LateUpdate(const float _tickSpeed)
 {
-
+    mIsDirty = false;
 }
 
 void Component::UpdateModelMatrix()

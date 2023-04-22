@@ -21,6 +21,7 @@ class Scene;
 class GameObject : public Object, public ITickable
 {
 protected:
+    bool mIsDirty = true;
     unsigned int mID;
     Transform mTransform;
     GameObject* mParent = nullptr;
@@ -34,6 +35,8 @@ public :
     GameObject(const vec3& _positions, const vec3& _rotations, const vec3& _scale);
 
 public:
+    bool IsDirty() const {return mIsDirty;}
+
     unsigned int GetID() const {return mID;}
     void SetID(const unsigned int _id) {mID = _id;}
     

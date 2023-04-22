@@ -20,11 +20,11 @@ Character::Character()
     //mSphereCollider->SetRadius(7.5f);
     mBoxCollider = AddComponent<BoxCollider>();
     mBoxCollider->SetSize(vec3(10));
-    mBoxCollider->SetOnCollideCallback([](CollisionData _data) 
-    { 
-        ObjectManager* _objectManager = ObjectManager::Instance();
-        _objectManager->Create<GameObject>(_data.mImpactPosition); 
-    });
+    // mBoxCollider->SetOnCollisionCallback([](CollisionData _data) 
+    // {
+    //     ObjectManager* _objectManager = ObjectManager::Instance();
+    //     _objectManager->Create<GameObject>(_data.mImpactPosition); 
+    // });
     mPhysicComponent = AddComponent<PhysicComponent>();
 }
 

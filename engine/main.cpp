@@ -5,9 +5,6 @@
 #include "engine/Scenes/TP3/SceneTP3.h"
 #include "engine/Scenes/TP4/SceneTP4.h"
 
-#include <iostream>
-using namespace std;
-
 //TODO Keyboard QWERTY->AZERTY
 //TODO Renderer unload only scene
 //TODO ShaderManager unload only scene

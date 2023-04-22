@@ -1,8 +1,6 @@
 #include "MeshComponent.h"
 
 #include <limits>
-#include <iostream>
-using namespace std;
 
 #include "engine/Meshs/Mesh/Mesh.h"
 #include "engine/Materials/Material.h"
@@ -27,7 +25,7 @@ void MeshComponent::ChangeMeshByDistance(Camera* _renderingCamera, float _thresh
 
 void MeshComponent::Render(Camera* _renderingCamera)
 {
-    if(!mCanBeRendered) return;
+    if(!mCanBeRendered || mIsDirty) return;
 
     //Calculate MVP
     const mat4& _modelMatrix = mTransform.GetModelMatrix();

@@ -30,18 +30,9 @@ void GameObject::Update(const float _tickSpeed)
     for(GameObject* _child : mChildren)
     {
         _child->Update(_tickSpeed);
-        //_child->UpdateModelMatrix();
     }
+    mIsDirty = false;
 }
-
-// void GameObject::UpdateModelMatrix()
-// {
-//     // mTransform.UpdateModelMatrix();
-//     // for(Component* _component : mComponents)
-//     //     _component->UpdateModelMatrix();
-//     // for(GameObject* _child : mChildren)
-//     //     _child->UpdateModelMatrix();
-// }
 
 void GameObject::LateUpdate(const float _tickSpeed)
 {
@@ -49,6 +40,7 @@ void GameObject::LateUpdate(const float _tickSpeed)
         _component->LateUpdate(_tickSpeed);
     for(GameObject* _child : mChildren)
         _child->LateUpdate(_tickSpeed);
+    mIsDirty = false;
 }
 
 Scene* GameObject::GetWorld()
@@ -88,6 +80,7 @@ void GameObject::SetParent(GameObject* _gameobject)
 
 void GameObject::Draw3DAxis()
 {
+    if(mIsDirty) return;
     mTransform.Draw3DAxis();
     for(Component* _component : mComponents)
         _component->Draw3DAxis();

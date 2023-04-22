@@ -38,19 +38,20 @@ Character* SceneTP4::CreateCharacter()
 Landscape* SceneTP4::CreateLandscape()
 {
     ObjectManager* _objectManager = ObjectManager::Instance();
-    Landscape* _landscape = _objectManager->Create<Landscape>(vec3(0,0,25), vec3(90,0,0), vec3(200,1,200));
-    Landscape* _landscape3 = _objectManager->Create<Landscape>(vec3(-25,0,0), vec3(0,0,90), vec3(200,1,200));
-    Landscape* _landscape2 = _objectManager->Create<Landscape>(vec3(0,-50,0), vec3(0), vec3(200,1,200));
-    _landscape->ChangeResolution(2,2);
-    //_landscape->ApplyHeightmap("Textures/Heightmaps/height_test.png",100);
+    Landscape* _landscape = _objectManager->Create<Landscape>(vec3(0,-50,0), vec3(0), vec3(1800,1,1800));
+    _landscape->ChangeResolution(256,256);
+    _landscape->ApplyHeightmap("Textures/Heightmaps/heightmap.png",1000);
 
     LandscapeMaterial* _landscapeMaterial= _landscape->GetMaterial();
     _landscapeMaterial->AddLayer(0, GRASS_TEXTURE);
     _landscapeMaterial->AddLayer(1, ROCK_TEXTURE);
     _landscapeMaterial->AddLayer(2, SNOWROCKS_TEXTURE);
+    _landscapeMaterial->SetTiling(100);
 
-    _landscapeMaterial->AddTransition(0, 50);
-    _landscapeMaterial->AddTransition(1, 80);
+    // _landscapeMaterial->AddTransition(0, 50);
+    // _landscapeMaterial->AddTransition(1, 80);
+    _landscapeMaterial->AddTransition(0, 70);
+    _landscapeMaterial->AddTransition(1, 225);
     return _landscape;
 }
 

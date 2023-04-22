@@ -21,15 +21,12 @@ void PhysicManager::AddPhysicComponent(PhysicComponent* _physicComponent)
         mPhysicSphereComponents.push_back(PhysicSphereData(_physicComponent, _sphere));
         return;
     }
-
-    //mPhysicComponents.push_back(_physicComponent);
 }
 
 void PhysicManager::DeletePhysicComponents()
 {
     mPhysicCubeComponents.clear();
     mPhysicSphereComponents.clear();
-    //mPhysicComponents.clear();
 }
 
 void PhysicManager::UpdatePhysic(const float _deltaTime)
@@ -42,6 +39,7 @@ void PhysicManager::UpdatePhysic(const float _deltaTime)
     ClipPhysicComponents();
     DetectCollisions();
     ResolveCollisions(_dtPhysic);
+    EndProcessCallbacks();
 }
 
 void PhysicManager::ApplyVelocity(const float _deltaTime)
@@ -60,9 +58,6 @@ void PhysicManager::ClipPhysicComponents()
 
     for(PhysicSphereData _dataSphere : mPhysicSphereComponents)
         _dataSphere.mPhysicComponent->ApplyClip();
-
-    // for(PhysicComponent* _component : mPhysicComponents)
-    //     _component->ApplyClip();
 }
 
 void PhysicManager::DetectCollisions()
@@ -132,17 +127,6 @@ void PhysicManager::DetectCollisions()
             mCollisionDetected.push_back(_collision);
         }
     }
-
-    // for(PhysicComponent* _mainComponent : mPhysicComponents)
-    //     for(PhysicComponent* _otherComponent : mPhysicComponents)
-    //     {
-    //         if(_mainComponent == _otherComponent) continue;
-    //         bool _areColliding = AreColliding(_mainComponent, dynamic_cast<BoxCollider*>(_otherCollider));
-    //         if(!_areColliding) continue;
-
-    //         //Collision
-    //         if(!_mainCollider->IsTrigger() && !_otherCollider->IsTrigger())
-    //     }
 }
 
 void PhysicManager::ResolveCollisions(const float _deltaTime)
@@ -153,7 +137,7 @@ void PhysicManager::ResolveCollisions(const float _deltaTime)
         PhysicComponent* _otherComponent =  _data.mOtherComponent;
 
         Collider* _mainCollider = _mainComponent->GetCollider();
-        Collider* _otherCollider = _mainComponent->GetCollider();
+        Collider* _otherCollider = _otherComponent->GetCollider();
 
         bool _mainIsTrigger = _mainCollider->IsTrigger();
         bool _otherIsTrigger = _otherCollider->IsTrigger();
@@ -161,17 +145,24 @@ void PhysicManager::ResolveCollisions(const float _deltaTime)
         if(!_mainIsTrigger && !_otherIsTrigger)
         {
             if(!_mainComponent->IsStatic()) _mainComponent->ResponseCollision(_deltaTime,_data.mImpactNormale, _data.mAmountInCollision);
-            if(!_mainComponent->IsStatic() || !_otherComponent->IsStatic()) _mainCollider->OnCollide(_data);
+            if(!_mainComponent->IsStatic() || !_otherComponent->IsStatic()) _mainCollider->ProcessCollideCallbacks(_otherCollider, _data);
         }
         else if(_mainIsTrigger)
         {
-            if(!_mainComponent->IsStatic() || !_otherComponent->IsStatic()) _mainCollider->OnTrigger(_data);
+            if(!_mainComponent->IsStatic() || !_otherComponent->IsStatic()) _mainCollider->ProcessTriggerCallbacks(_otherCollider, _data);
         }
 
     }
-    //Collision
-    //if(!_mainCollider->IsTrigger() && !_otherCollider->IsTrigger())
 
     //Empty Collisions
     mCollisionDetected.clear();
+}
+
+void PhysicManager::EndProcessCallbacks()
+{
+    for(PhysicCubeData _dataCube : mPhysicCubeComponents)
+        _dataCube.mPhysicComponent->GetCollider()->EndProcessCallbacks();
+
+    for(PhysicSphereData _dataSphere : mPhysicSphereComponents)
+        _dataSphere.mPhysicComponent->GetCollider()->EndProcessCallbacks();
 }
