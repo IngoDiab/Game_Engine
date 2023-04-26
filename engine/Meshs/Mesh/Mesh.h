@@ -74,6 +74,19 @@ public:
     void DrawMesh();
 
 private:
-    void CreateMeshLoaded(aiMesh* _loadedMesh);
-    void LoadMeshAssimp(const string& _pathMesh);
+    static vector<Mesh*> CreateMeshLoaded(const aiScene* _aiScene, const aiNode* _node, const aiMatrix4x4& _parentTransformation);
+public:
+    static vector<Mesh*> LoadMeshAssimp(const string& _pathMesh);
+
+
+////ASSIMP->GLM////
+mat4 static ASSIMP_To_GLM(const aiMatrix4x4& _matrix)
+{
+    return glm::mat4(
+        (double)_matrix.a1, (double)_matrix.b1, (double)_matrix.c1, (double)_matrix.d1,
+        (double)_matrix.a2, (double)_matrix.b2, (double)_matrix.c2, (double)_matrix.d2,
+        (double)_matrix.a3, (double)_matrix.b3, (double)_matrix.c3, (double)_matrix.d3,
+        (double)_matrix.a4, (double)_matrix.b4, (double)_matrix.c4, (double)_matrix.d4
+    );
+}
 };

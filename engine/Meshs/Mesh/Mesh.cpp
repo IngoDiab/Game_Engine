@@ -16,10 +16,6 @@ Mesh::Mesh()
 Mesh::Mesh(const string& _pathMesh)
 {
     LoadMeshAssimp(_pathMesh);
-    RefreshVBOData(VERTEX_ATTRIBUTE::VERTEX_POSITION);
-    RefreshVBOData(VERTEX_ATTRIBUTE::VERTEX_UVS);
-    RefreshVBOData(VERTEX_ATTRIBUTE::VERTEX_NORMALE);
-    RefreshVBOData(VERTEX_ATTRIBUTE::VERTEX_INDICES);
 }
 
 Mesh::~Mesh()
@@ -96,40 +92,73 @@ void Mesh::DrawMesh()
     mIndicesVBO.DrawVBOIndices(GL_TRIANGLES, mIndices.size());
 }
 
-void Mesh::CreateMeshLoaded(aiMesh* _loadedMesh)
+vector<Mesh*> Mesh::CreateMeshLoaded(const aiScene* _aiScene, const aiNode* _node, const aiMatrix4x4& _parentTransformation)
 {
-    unsigned int _nbVertices = _loadedMesh->mNumVertices;
-    for(unsigned int i = 0; i<_nbVertices; ++i)
+    unsigned int* _meshesInNode =_node->mMeshes;
+    unsigned int _nbMeshesInNode =_node->mNumMeshes;
+    vector<Mesh*> _meshes = vector<Mesh*>();
+    aiMatrix4x4 _localTransformationASSIMP = _node->mTransformation * _parentTransformation;
+    mat4 _localTransformationGLM = ASSIMP_To_GLM(_localTransformationASSIMP);
+
+    for(unsigned int i = 0; i<_nbMeshesInNode; ++i)
     {
-        aiVector3D _position = _loadedMesh->mVertices[i];
-        mPositions.push_back(vec3(_position.x,_position.y,_position.z));
+        Mesh* _mesh = new Mesh();
+        _mesh->ClearMeshBuffers();
 
-        aiVector3D _uv = _loadedMesh->mTextureCoords[0][i];
-        mUVs.push_back(vec2(_uv.x,_uv.y));
+        aiMesh* _loadedMesh = _aiScene->mMeshes[_meshesInNode[i]];
 
-        aiVector3D _normal = _loadedMesh->mNormals[i];
-        mNormales.push_back(vec3(_normal.x,_normal.y,_normal.z));
+        unsigned int _nbVertices = _loadedMesh->mNumVertices;
+        for(unsigned int i = 0; i<_nbVertices; ++i)
+        {
+            aiVector3D _position = _loadedMesh->mVertices[i];
+            vec4 _positionV4 = _localTransformationGLM * vec4(_position.x,_position.y,_position.z,1);
+            _mesh->mPositions.push_back(vec3(_positionV4.x,_positionV4.y,_positionV4.z));
+
+            aiVector3D _uv = _loadedMesh->mTextureCoords[0][i];
+            _mesh->mUVs.push_back(vec2(_uv.x,_uv.y));
+
+            aiVector3D _normal = _loadedMesh->mNormals[i];
+            _mesh->mNormales.push_back(vec3(_normal.x,_normal.y,_normal.z));
+        }
+
+        unsigned int _nbTriangles = _loadedMesh->mNumFaces;
+        for(unsigned int i = 0; i<_nbTriangles; ++i)
+        {
+            aiFace _triangle = _loadedMesh->mFaces[i];
+            for (unsigned int j = 0; j < 3; j++) {
+                _mesh->mIndices.push_back(_triangle.mIndices[j]);
+            }
+        }
+
+        _mesh->RefreshVBOData(VERTEX_ATTRIBUTE::VERTEX_POSITION);
+        _mesh->RefreshVBOData(VERTEX_ATTRIBUTE::VERTEX_UVS);
+        _mesh->RefreshVBOData(VERTEX_ATTRIBUTE::VERTEX_NORMALE);
+        _mesh->RefreshVBOData(VERTEX_ATTRIBUTE::VERTEX_INDICES);
+
+        _meshes.push_back(_mesh);
+    }
+    
+    aiNode** _nodeChildren = _node->mChildren;
+    unsigned int _nbNodeChildren = _node->mNumChildren;
+    for(unsigned int i = 0; i<_nbNodeChildren; ++i)
+    {
+        vector<Mesh*> _childrenMeshes = CreateMeshLoaded(_aiScene, _nodeChildren[i], _localTransformationASSIMP);
+        _meshes.insert(_meshes.end(), _childrenMeshes.begin(), _childrenMeshes.end());
     }
 
-    unsigned int _nbTriangles = _loadedMesh->mNumFaces;
-    for(unsigned int i = 0; i<_nbTriangles; ++i)
-    {
-        aiFace _triangle = _loadedMesh->mFaces[i];
-		for (unsigned int j = 0; j < 3; j++) {
-			mIndices.push_back(_triangle.mIndices[j]);
-		}
-    }
+    return _meshes;
 }
 
 //Issue if pathMesh is more than one mesh (merge all meshs in one)
-void Mesh::LoadMeshAssimp(const string& _pathMesh)
+vector<Mesh*> Mesh::LoadMeshAssimp(const string& _pathMesh)
 {
+    vector<Mesh*> _meshs = vector<Mesh*>();
+
     Assimp::Importer _importer;
     const aiScene* _aiScene = _importer.ReadFile(_pathMesh.c_str(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices);
-    if(!_aiScene || !_aiScene->HasMeshes()) return;
+    if(!_aiScene || !_aiScene->HasMeshes()) return _meshs;
 
-    ClearMeshBuffers();
-    unsigned int _nbMeshs = _aiScene->mNumMeshes;
-    for(unsigned int i = 0; i<_nbMeshs; ++i)
-        CreateMeshLoaded(_aiScene->mMeshes[i]);
+    _meshs = CreateMeshLoaded(_aiScene, _aiScene->mRootNode, aiMatrix4x4());
+    
+    return _meshs;
 }

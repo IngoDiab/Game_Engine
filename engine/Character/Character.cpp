@@ -12,7 +12,7 @@
 Character::Character()
 {
     mMeshComponent = AddComponent<MeshComponent>(vec3(0), vec3(0), vec3(5));
-    mMeshComponent->CreateMesh<Mesh>("Meshs/DamagedHelmet/DamagedHelmet.glb");
+    mMeshComponent->CreateMesh<Mesh>("Meshs/Spaceship/scene.gltf");
     mMeshComponent->AddLOD<Sphere>(100, 10,10);
     mMeshComponent->AddLOD<Sphere>(200, 4,4);
     mMeshComponent->CreateMaterial<Material>(PHONG_VERTEX, PHONG_FRAG);

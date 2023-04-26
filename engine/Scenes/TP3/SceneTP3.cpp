@@ -32,7 +32,7 @@ Character* SceneTP3::CreateCharacter()
     MeshComponent* _meshComponent = _character->GetComponent<MeshComponent>();
     _meshComponent->GetTransformInstance()->RotateLocalAxisX(90);
 
-    Material* _material = _meshComponent->GetMaterial();
+    Material* _material = _meshComponent->GetMaterial(0);
     _material->SetTexture(TEXTURE_SLOT::ALBEDO, "Textures/2D/DamagedHelmet/albedo.jpg");
     return _character;
 }

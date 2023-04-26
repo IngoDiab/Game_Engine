@@ -26,8 +26,8 @@ protected:
 
 public:
     Cube* GetPhysicBox() const {return mMeshAABB;}
-    virtual Mesh* GetMesh() override {return mRenderAABB ? (Mesh*)mMeshAABB : (Mesh*)mMeshOOBB;}
-    virtual BaseMaterial* GetRendererMaterial() override {return (BaseMaterial*)mMaterial;}
+    virtual Mesh* GetMesh(int _index = 0) override {return mRenderAABB ? (Mesh*)mMeshAABB : (Mesh*)mMeshOOBB;}
+    virtual BaseMaterial* GetRendererMaterial(int _index = 0) override {return (BaseMaterial*)mMaterial;}
 
     void SetCenter(const vec3& _center) {mCenter = _center;}
     void SetSize(const vec3& _size) {mSize = _size;}

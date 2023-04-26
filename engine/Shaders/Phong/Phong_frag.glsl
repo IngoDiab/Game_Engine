@@ -10,5 +10,5 @@ out vec4 FragColor;
 void main()
 {
         vec4 _texelAlbedo = texture(mAlbedo, o_uv);
-        FragColor = _texelAlbedo;
+        FragColor = vec4(o_uv,0,1);
 }

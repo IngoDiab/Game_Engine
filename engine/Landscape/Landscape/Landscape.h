@@ -30,10 +30,10 @@ protected:
     PhysicComponent* mPhysicComponent = nullptr;
 
 public:
-    virtual Mesh* GetMesh() override {return (Mesh*)mMesh;}
+    virtual Mesh* GetMesh(int _index = 0) override {return (Mesh*)mMesh;}
     void SetMesh(LandscapeMesh* const _mesh) {mMesh = _mesh;}
 
-    virtual BaseMaterial* GetRendererMaterial() override {return (BaseMaterial*)mMaterial;}
+    virtual BaseMaterial* GetRendererMaterial(int _index = 0) override {return (BaseMaterial*)mMaterial;}
     LandscapeMaterial* GetMaterial() {return mMaterial;}
     void SetMaterial(LandscapeMaterial* const _material) {mMaterial = _material;}
 

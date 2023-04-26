@@ -10,17 +10,19 @@ class Camera;
 class MeshComponent : public Component, public IRenderable
 {
 protected:
-    Mesh* mMesh = nullptr;
+    vector<Mesh*> mMeshs = vector<Mesh*>();
     map<double, Mesh*> mLODS = map<double, Mesh*>();
-    Material* mMaterial = nullptr;
+    vector<Material*> mMaterials = vector<Material*>();
     bool mCanBeRendered = true;
 public:
-    virtual Mesh* GetMesh() override {return mMesh;}
-    void SetMesh(Mesh* const _mesh) {mMesh = _mesh;}
+    //virtual Mesh* GetMesh() override {return mMesh[0];}
+    virtual Mesh* GetMesh(int _index) override {return mMeshs[_index];}
+    void SetMesh(int _index, Mesh* const _mesh) {mMeshs[_index] = _mesh;}
 
-    virtual BaseMaterial* GetRendererMaterial() override {return (BaseMaterial*)mMaterial;}
-    Material* GetMaterial() {return mMaterial;}
-    void SetMaterial(Material* const _material) {mMaterial = _material;}
+    //virtual BaseMaterial* GetRendererMaterial() override {return (BaseMaterial*)mMaterial[0];}
+    virtual BaseMaterial* GetRendererMaterial(int _index) override {return (BaseMaterial*)mMaterials[_index];}
+    Material* GetMaterial(int _index) {return mMaterials[_index];}
+    void SetMaterial(int _index, Material* const _material) {mMaterials[_index] = _material;}
 
     virtual bool CanBeRendered() const override {return mCanBeRendered;}
     void SetCanBeRendered(const bool _canBeRendered) {mCanBeRendered = _canBeRendered;}
@@ -56,35 +58,38 @@ T* MeshComponent::CreateMesh()
     T* _meshCreated = new T();
     Mesh* _mesh = dynamic_cast<Mesh*>(_mesh);
     if(!_mesh) return nullptr;
-    if(mMesh) delete mMesh;
-    mMesh = _meshCreated;
+    // if(mMesh) delete mMesh;
+    // mMesh = _meshCreated;
 
-    for(pair<double,Mesh*> _pair : mLODS)
-    {
-        delete _pair.second;
-    }
-    mLODS.clear();
+    // for(pair<double,Mesh*> _pair : mLODS)
+    // {
+    //     delete _pair.second;
+    // }
+    // mLODS.clear();
 
-    mLODS[0] = _meshCreated;
+    // mLODS[0] = _meshCreated;
+    mMeshs.push_back(_mesh);
     return _meshCreated;
 }
 
 template<typename T>
 T* MeshComponent::CreateMesh(const string& _meshPath)
 {
-    T* _meshCreated = new T(_meshPath);
+    T* _meshCreated = new T();
     Mesh* _mesh = dynamic_cast<Mesh*>(_mesh);
     if(!_mesh) return nullptr;
-    if(mMesh) delete mMesh;
-    mMesh = _meshCreated;
+    // if(mMesh) delete mMesh;
+    // mMesh = _meshCreated;
 
-    for(pair<double,Mesh*> _pair : mLODS)
-    {
-        delete _pair.second;
-    }
-    mLODS.clear();
+    // for(pair<double,Mesh*> _pair : mLODS)
+    // {
+    //     delete _pair.second;
+    // }
+    // mLODS.clear();
 
-    mLODS[0] = _meshCreated;
+    // mLODS[0] = _meshCreated;
+    delete _meshCreated;
+    mMeshs = Mesh::LoadMeshAssimp(_meshPath);
     return _meshCreated;
 }
 
@@ -104,8 +109,9 @@ T* MeshComponent::CreateMaterial()
     T* _materialCreated = new T();
     BaseMaterial* _material = dynamic_cast<BaseMaterial*>(_materialCreated);
     if(!_material) return nullptr;
-    if(mMaterial) delete mMaterial;
-    mMaterial = _materialCreated;
+    // if(mMaterial) delete mMaterial;
+    // mMaterial = _materialCreated;
+    mMaterials.push_back(_materialCreated);
     return _materialCreated;
 }
 
@@ -115,7 +121,8 @@ T* MeshComponent::CreateMaterial(const string& _vertexShader, const string& _fra
     T* _materialCreated = new T(_vertexShader, _fragShader);
     BaseMaterial* _material = dynamic_cast<BaseMaterial*>(_materialCreated);
     if(!_material) return nullptr;
-    if(mMaterial) delete mMaterial;
-    mMaterial = _materialCreated;
+    // if(mMaterial) delete mMaterial;
+    // mMaterial = _materialCreated;
+    mMaterials.push_back(_materialCreated);
     return _materialCreated;
 }
