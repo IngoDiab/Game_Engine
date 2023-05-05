@@ -1,5 +1,11 @@
 #include "Material.h"
+
 #include "engine/ShaderHandlers/ShaderHandler/ShaderHandler.h"
+
+Material::Material() : Material(CUSTOM_PBR_VERTEX, CUSTOM_PBR_FRAG)
+{
+
+}
 
 Material::Material(const string& _vertexShader, const string& _fragShader)
 {
@@ -16,7 +22,7 @@ Material::~Material()
 
 void Material::Initialize()
 {
-    mColors[(int)COLOR_SLOT::AMBIENT] = vec3(0);
+    mColors[(int)COLOR_SLOT::AMBIENT] = vec3(.01f);
     mColors[(int)COLOR_SLOT::DIFFUSE] = vec3(1);
     mColors[(int)COLOR_SLOT::SPECULAR] = vec3(1);
 
@@ -26,6 +32,8 @@ void Material::Initialize()
 void Material::UseMaterial(const mat4& _model, const mat4& _view, const mat4& _proj)
 {
     BaseMaterial::UseMaterial(_model, _view, _proj);
+
+    mShaderHandler->SendBool(mIsUsingNormalMap, mShaderHandler->GetIsUsingNormalMapHandler());
 
     unsigned int _nbColors = mColors.size();
     for(int _colorSlot = 0; _colorSlot<_nbColors; ++_colorSlot)

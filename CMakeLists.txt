@@ -67,6 +67,8 @@ add_executable(engine
 	common/vboindexer.cpp
 	common/vboindexer.hpp
 	
+	engine/Buffers/FBO/FBO.h
+	engine/Buffers/FBO/FBO.cpp
 	engine/Buffers/VAO/VAO.h
 	engine/Buffers/VAO/VAO.cpp
 	engine/Buffers/VBO/VBO.h
@@ -111,6 +113,11 @@ add_executable(engine
 	engine/Landscape/Shader/Landscape_vertex.glsl
 	engine/Landscape/ShaderHandler/LandscapeShaderHandler.h
 	engine/Landscape/ShaderHandler/LandscapeShaderHandler.cpp
+	
+	engine/Lights/PointLight/PointLight.h
+	engine/Lights/PointLight/PointLight.cpp
+	engine/Lights/LightManager/LightManager.h
+	engine/Lights/LightManager/LightManager.cpp
 	
 	engine/Materials/BaseMaterial/BaseMaterial.h
 	engine/Materials/BaseMaterial/BaseMaterial.cpp
@@ -193,6 +200,8 @@ add_executable(engine
 	
 	engine/Utils/Printer/Printer.h
 	engine/Utils/Singleton/Singleton.h
+	engine/Utils/AssimpLoader/AssimpLoader.h
+	engine/Utils/AssimpLoader/AssimpLoader.cpp
 	engine/Utils/TextureLoader/TextureLoader.h
 	engine/Utils/TextureLoader/TextureLoader.cpp
 	engine/Utils/Interfaces/IMoving.h

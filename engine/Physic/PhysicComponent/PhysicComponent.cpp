@@ -48,7 +48,7 @@ void PhysicComponent::ApplyClip()
 {
     if(!mClipToLandscape) return;
     vec3 _position = mOwner->GetTransformInstance()->GetTransformData()->mWorldPosition;
-    mClipToLandscape->GetProjectionOnPlane(_position);
+    mClipToLandscape->GetProjectionOnPlane(_position,10);
     mOwner->SetPosition(_position);
 }
 

@@ -18,7 +18,6 @@ void Collider::ProcessTriggerCallbacks(Collider* _other, CollisionData _data)
 {
     AddColliderInContact(_other, _data);
     bool _wasAlreadyCollinding = AlreadyInContact(_other);
-    //cout<<_wasAlreadyCollinding<<endl;
     if(_wasAlreadyCollinding) OnTriggerStay(_data);
     else OnTriggerEnter(_data);
 }
@@ -32,12 +31,6 @@ void Collider::EndProcessCallbacks()
         /*else*/ if(mIsTrigger) OnTriggerExit(_colliderInContact.second);
     }
 
-    // if(mTriggerEnterCallback){
-    // Print("mLastFrameColliderInContact: ");
-    // cout<<mLastFrameColliderInContact.size()<<endl;
-    // Print("mColliderInContact: ");
-    // cout<<mColliderInContact.size()<<endl;
-    // }
     mLastFrameColliderInContact = mColliderInContact;
     mColliderInContact.clear();
 }

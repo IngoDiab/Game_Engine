@@ -40,9 +40,9 @@ Character* SceneTP3::CreateCharacter()
 Landscape* SceneTP3::CreateLandscape()
 {
     ObjectManager* _objectManager = ObjectManager::Instance();
-    Landscape* _landscape = _objectManager->Create<Landscape>(vec3(0), vec3(0), vec3(200,1,200));
-    _landscape->ChangeResolution(2,2);
-    _landscape->ApplyHeightmap("Textures/Heightmaps/height_test.png",100);
+    Landscape* _landscape = _objectManager->Create<Landscape>(vec3(0,-50,0), vec3(0), vec3(10000,1,10000));
+    _landscape->ChangeResolution(256,256);
+    _landscape->ApplyHeightmap("Textures/Heightmaps/heightmap.png",1000000, 100);
 
     LandscapeMaterial* _landscapeMaterial= _landscape->GetMaterial();
     _landscapeMaterial->AddLayer(0, GRASS_TEXTURE);

@@ -2,6 +2,10 @@
 
 #include <limits>
 
+#include <assimp/scene.h>
+#include <assimp/Importer.hpp> 
+#include <assimp/postprocess.h> 
+
 #include "engine/Meshs/Mesh/Mesh.h"
 #include "engine/Materials/Material.h"
 #include "engine/ShaderHandlers/ShaderHandler/ShaderHandler.h"

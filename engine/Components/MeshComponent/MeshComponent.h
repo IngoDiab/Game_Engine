@@ -1,5 +1,7 @@
 #pragma once
 
+#include "engine/Utils/AssimpLoader/AssimpLoader.h"
+
 #include "engine/Components/Component/Component.h"
 #include "engine/Utils/Interfaces/IRenderable.h"
 #include "engine/Meshs/Mesh/Mesh.h"
@@ -68,7 +70,8 @@ T* MeshComponent::CreateMesh()
     // mLODS.clear();
 
     // mLODS[0] = _meshCreated;
-    mMeshs.push_back(_mesh);
+    mMeshs.resize(1);
+    mMeshs[0] = _meshCreated;
     return _meshCreated;
 }
 
@@ -89,7 +92,7 @@ T* MeshComponent::CreateMesh(const string& _meshPath)
 
     // mLODS[0] = _meshCreated;
     delete _meshCreated;
-    mMeshs = Mesh::LoadMeshAssimp(_meshPath);
+    AssimpLoader::LoadAssimp(_meshPath, mMeshs, mMaterials);
     return _meshCreated;
 }
 
@@ -111,7 +114,9 @@ T* MeshComponent::CreateMaterial()
     if(!_material) return nullptr;
     // if(mMaterial) delete mMaterial;
     // mMaterial = _materialCreated;
-    mMaterials.push_back(_materialCreated);
+    mMaterials.resize(1);
+    mMaterials[0] = _materialCreated;
+    _materialCreated->Initialize();
     return _materialCreated;
 }
 
@@ -123,6 +128,8 @@ T* MeshComponent::CreateMaterial(const string& _vertexShader, const string& _fra
     if(!_material) return nullptr;
     // if(mMaterial) delete mMaterial;
     // mMaterial = _materialCreated;
-    mMaterials.push_back(_materialCreated);
+    mMaterials.resize(1);
+    mMaterials[0] = _materialCreated;
+    _materialCreated->Initialize();
     return _materialCreated;
 }

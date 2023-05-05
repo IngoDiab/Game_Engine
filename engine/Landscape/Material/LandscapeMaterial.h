@@ -14,6 +14,7 @@ protected:
 
     unsigned int mHeightmap;
     float mHeight = 1;
+    float mShift = 1;
 
     vector<unsigned int> mLayers = vector<unsigned int>(15);
     vector<float> mHeightsTransition = vector<float>(14);
@@ -24,6 +25,8 @@ protected:
 public:
     void SetHeightmap(const string& _map, const float _height){LoadTexture(mHeightmap, _map); mHeight=_height;}
     void SetHeight(const float _height){mHeight=_height;}
+    float GetShift() const {return mShift;}
+    void SetShift(const float _shift){mShift=_shift;}
     void AddLayer(unsigned int _slot, const string& _pathTexture){DeleteTexture(mLayers[_slot]), LoadTexture(mLayers[_slot], _pathTexture);}
     void AddTransition(unsigned int _slot, float _transition){mHeightsTransition[_slot] = _transition;}
     void SetTreshold(float _threshold){mTransitionThreshold = _threshold;}

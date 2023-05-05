@@ -11,8 +11,8 @@
 
 Character::Character()
 {
-    mMeshComponent = AddComponent<MeshComponent>(vec3(0), vec3(0), vec3(5));
-    mMeshComponent->CreateMesh<Mesh>("Meshs/Spaceship/scene.gltf");
+    mMeshComponent = AddComponent<MeshComponent>(vec3(0), vec3(0), vec3(.1));
+    mMeshComponent->CreateMesh<Mesh>("3DModels/Asteroid/scene.gltf");
     mMeshComponent->AddLOD<Sphere>(100, 10,10);
     mMeshComponent->AddLOD<Sphere>(200, 4,4);
     mMeshComponent->CreateMaterial<Material>(PHONG_VERTEX, PHONG_FRAG);

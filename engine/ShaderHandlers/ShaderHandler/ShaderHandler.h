@@ -12,11 +12,13 @@ using namespace glm;
 class ShaderHandler : public BaseShaderHandler
 {
 protected:
+    int mIsUsingNormalMapHandler = false;
     vector<int> mColorsHandlers = vector<int>(3);
     vector<int> mTexturesHandlers = vector<int>(7);
-    vector<int> mCoeffsHandlers = vector<int>(6);
+    vector<int> mCoeffsHandlers = vector<int>(7);
 
 public:
+    int GetIsUsingNormalMapHandler(){return mIsUsingNormalMapHandler;}
     vector<int> GetColorHandlers() const {return mColorsHandlers;}
     vector<int> GetTexturesHandlers() const {return mTexturesHandlers;}
     vector<int> GetCoeffsHandlers() const {return mCoeffsHandlers;}

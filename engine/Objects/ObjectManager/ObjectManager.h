@@ -5,6 +5,8 @@ using namespace std;
 
 #include "engine/Utils/Singleton/Singleton.h"
 #include "engine/Objects/GameObject/GameObject.h"
+#include "engine/Lights/PointLight/PointLight.h"
+#include "engine/Lights/LightManager/LightManager.h"
 
 class ObjectManager final : public Singleton<ObjectManager>
 {
@@ -47,5 +49,9 @@ T* ObjectManager::Create(const vec3& _position, const vec3& _rotation, const vec
 
     IRenderable* _gameobjectRenderable = dynamic_cast<IRenderable*>(_gameobject);
     if(_gameobjectRenderable) Renderer::Instance()->AddRenderable(_gameobjectRenderable);
+
+    PointLight* _gameobjectPointLight = dynamic_cast<PointLight*>(_gameobject);
+    if(_gameobjectPointLight) LightManager::Instance()->AddLight(_gameobjectPointLight);
+
     return _object;
 }

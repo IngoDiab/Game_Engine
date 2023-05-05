@@ -25,6 +25,7 @@ void LandscapeMaterial::UseMaterial(const mat4& _model, const mat4& _view, const
 
     //Send height
     mShaderHandler->SendFloat(mHeight, mShaderHandler->GetHeightHandler());
+    mShaderHandler->SendFloat(mShift, mShaderHandler->GetShiftHandler());
 
     //Send layers
     unsigned int _nbLayers = mLayers.size();
