@@ -30,17 +30,16 @@ Character* SceneTP4::CreateCharacter()
     MeshComponent* _meshComponent = _character->GetComponent<MeshComponent>();
     _meshComponent->GetTransformInstance()->RotateLocalAxisX(90);
 
-    Material* _material = _meshComponent->GetMaterial(0);
-    //_material->SetTexture(TEXTURE_SLOT::ALBEDO, "3DModels/DamagedHelmet/Textures/albedo.jpg");
+    Material* _material = _meshComponent->GetMaterial();
+    _material->SetTexture(TEXTURE_SLOT::ALBEDO, "Textures/2D/DamagedHelmet/albedo.jpg");
     return _character;
 }
 
 Landscape* SceneTP4::CreateLandscape()
 {
     ObjectManager* _objectManager = ObjectManager::Instance();
-    Landscape* _landscape = _objectManager->Create<Landscape>(vec3(0,-50,0), vec3(0), vec3(10000,1,10000));
+    Landscape* _landscape = _objectManager->Create<Landscape>(vec3(0,-50,0), vec3(0), vec3(1800,1,1800));
     _landscape->ChangeResolution(256,256);
-    _landscape->ApplyHeightmap("Textures/Heightmaps/heightmap.png",1000000, 100);
 
     LandscapeMaterial* _landscapeMaterial= _landscape->GetMaterial();
     _landscapeMaterial->AddLayer(0, GRASS_TEXTURE);

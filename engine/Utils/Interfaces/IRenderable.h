@@ -9,8 +9,8 @@ class BaseMaterial;
 class IRenderable
 {
 public:
-    virtual Mesh* GetMesh(int _index) = 0;
-    virtual BaseMaterial* GetRendererMaterial(int _index) = 0;
+    virtual Mesh* GetMesh() = 0;
+    virtual BaseMaterial* GetRendererMaterial() = 0;
     virtual bool CanBeRendered() const = 0;
 
 public:

@@ -79,7 +79,7 @@ void SceneManager::UnloadCurrentScene()
     try
     {
         if(!mCurrentScene) throw CustomException("Can't unload current because there's no current scene.");
-        mCurrentScene->UnloadScene();
+        mCurrentScene->LoadScene();
     }
     catch(const CustomException& e)
     {

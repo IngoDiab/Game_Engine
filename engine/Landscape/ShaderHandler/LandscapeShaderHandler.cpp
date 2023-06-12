@@ -15,7 +15,6 @@ void LandscapeShaderHandler::Initialize()
 
     //Get height handler
     GetUniformLocation(mHeightHandler, "mHeight");
-    GetUniformLocation(mShifttHandler, "mShift");
 
     //Get layers handler
     unsigned int _nbLayers = mLayersHandlers.size();

@@ -15,7 +15,7 @@ class Renderer final : public Singleton<Renderer>
 
 public:
     void AddRenderable(IRenderable* _renderable);
-    // void DeleteRenderables();
+    void DeleteRenderables();
     void DrawObjects(Camera* _camera);
     void Draw3DAxis();
 };

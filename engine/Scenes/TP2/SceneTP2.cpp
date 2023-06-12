@@ -21,11 +21,8 @@ Planet* SceneTP2::CreateSun()
 {
     ObjectManager* _objectManager = ObjectManager::Instance();
     Planet* _sun = _objectManager->Create<Planet>(vec3(0), vec3(0), vec3(10));
-    Material* _material = _sun->GetMeshComponent()->GetMaterial(0);
+    Material* _material = _sun->GetMeshComponent()->CreateMaterial<Material>(PHONG_VERTEX, PHONG_FRAG);
     _material->SetTexture(TEXTURE_SLOT::ALBEDO, "Textures/2D/sun.jpg");
-    _material->SetValueCoefficients(COEFF_SLOT::EMISSIVNESS, 1);
-
-    PointLight* _sunLight = _objectManager->Create<PointLight>();
     return _sun;
 }
 
@@ -33,7 +30,7 @@ Planet* SceneTP2::CreateEarth(Planet* _parent)
 {   
     ObjectManager* _objectManager = ObjectManager::Instance();
     Planet* _earth = _objectManager->Create<Planet>(vec3(25), vec3(0,0,23.44f), vec3(.5), _parent);
-    Material* _material = _earth->GetMeshComponent()->GetMaterial(0);
+    Material* _material = _earth->GetMeshComponent()->CreateMaterial<Material>(PHONG_VERTEX, PHONG_FRAG);
     _material->SetTexture(TEXTURE_SLOT::ALBEDO, "Textures/2D/earth.jpg");
     _earth->SetRevolutionSpeed(5);
     _earth->SetDistanceCenter(50);
@@ -44,7 +41,7 @@ Planet* SceneTP2::CreateMoon(Planet* _parent)
 {
     ObjectManager* _objectManager = ObjectManager::Instance();
     Planet* _moon = _objectManager->Create<Planet>(vec3(5), vec3(0,0,-16.76f), vec3(.5), _parent);
-    Material* _material = _moon->GetMeshComponent()->GetMaterial(0);
+    Material* _material = _moon->GetMeshComponent()->CreateMaterial<Material>(PHONG_VERTEX, PHONG_FRAG);
     _material->SetTexture(TEXTURE_SLOT::ALBEDO, "Textures/2D/moon.jpg");
     _moon->SetRevolutionSpeed(100);
     _moon->SetDistanceCenter(15);

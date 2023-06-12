@@ -11,8 +11,8 @@
 
 Character::Character()
 {
-    mMeshComponent = AddComponent<MeshComponent>(vec3(0), vec3(0), vec3(.1));
-    mMeshComponent->CreateMesh<Mesh>("3DModels/Asteroid/scene.gltf");
+    mMeshComponent = AddComponent<MeshComponent>(vec3(0), vec3(0), vec3(5));
+    mMeshComponent->CreateMesh<Mesh>("Meshs/DamagedHelmet/DamagedHelmet.glb");
     mMeshComponent->AddLOD<Sphere>(100, 10,10);
     mMeshComponent->AddLOD<Sphere>(200, 4,4);
     mMeshComponent->CreateMaterial<Material>(PHONG_VERTEX, PHONG_FRAG);
@@ -57,7 +57,7 @@ void Character::ForwardBackwardVelocity(const float _move)
 void Character::Jump(const bool _move)
 {
     if(!_move) return;
-    const vec3 _jumpDirection = normalize(mTransform.GetUpVector());
+    const vec3 _jumpDirection = normalize(mTransform.GetUpVector()+mTransform.GetForwardVector());
     mPhysicComponent->AddVelocity(_jumpDirection*mHeightJump);
 }
 

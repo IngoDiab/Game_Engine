@@ -11,12 +11,6 @@
 #define PHONG_VERTEX "Shaders/Phong/Phong_vertex.glsl"
 #define PHONG_FRAG "Shaders/Phong/Phong_frag.glsl"
 
-#define CUSTOM_PBR_VERTEX "Shaders/CustomPBR/vertex.glsl"
-#define CUSTOM_PBR_FRAG "Shaders/CustomPBR/fragment.glsl"
-
-#define FILAMENT_VERTEX "Shaders/Filament/vertex.glsl"
-#define FILAMENT_FRAG "Shaders/Filament/frag.glsl"
-
 #define COLLIDER_VERTEX "Shaders/Debug/Colliders/Collider_vertex.glsl"
 #define COLLIDER_FRAG "Shaders/Debug/Colliders/Collider_frag.glsl"
 

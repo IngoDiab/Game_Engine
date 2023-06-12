@@ -6,7 +6,6 @@ class LandscapeShaderHandler final : public BaseShaderHandler
 protected:
     int mHeightmapHandler;
     int mHeightHandler;
-    int mShifttHandler;
 
     vector<int> mLayersHandlers = vector<int>(15);
     vector<int> mHeightsTransitionHandlers = vector<int>(14);
@@ -17,7 +16,6 @@ protected:
 public:
     int GetHeightmapHandler() const {return mHeightmapHandler;}
     int GetHeightHandler() const {return mHeightHandler;}
-    int GetShiftHandler() const {return mShifttHandler;}
     vector<int> GetLayersHandlers() const {return mLayersHandlers;}
     vector<int> GetHeightsTransitionHandlers() const {return mHeightsTransitionHandlers;}
     int GetTransitionThresholdHandler() const {return mTransitionThresholdHandler;}

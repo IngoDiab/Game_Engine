@@ -30,10 +30,10 @@ protected:
     PhysicComponent* mPhysicComponent = nullptr;
 
 public:
-    virtual Mesh* GetMesh(int _index = 0) override {return (Mesh*)mMesh;}
+    virtual Mesh* GetMesh() override {return (Mesh*)mMesh;}
     void SetMesh(LandscapeMesh* const _mesh) {mMesh = _mesh;}
 
-    virtual BaseMaterial* GetRendererMaterial(int _index = 0) override {return (BaseMaterial*)mMaterial;}
+    virtual BaseMaterial* GetRendererMaterial() override {return (BaseMaterial*)mMaterial;}
     LandscapeMaterial* GetMaterial() {return mMaterial;}
     void SetMaterial(LandscapeMaterial* const _material) {mMaterial = _material;}
 
@@ -63,14 +63,14 @@ public:
     virtual void CleanRessources() override;
 
 public:
-    void ApplyHeightmap(const string& _heightmapPath, const float _maxHeight, const float _shift);
+    void ApplyHeightmap(const string& _heightmapPath, const float _maxHeight);
     void ChangeResolution(const int _nbVertexWidth, const int _nbVertexLength);
 
     void IncreaseResolution(const bool _increase);
     void DecreaseResolution(const bool _decrease);
     
     bool InTriangle(vec3 _point, vec3 _v0, vec3 _v1, vec3 _v2, float& _u0, float& _u1, float& _u2);
-    void GetProjectionOnPlane(vec3& _pointToProject, float _offset);
+    void GetProjectionOnPlane(vec3& _pointToProject);
     vec2 UV(const vec3& _posOnPlan, const vec3& _uVector, const vec3& _vVector);
     double TexelByUV(const vec2& _uv);
 

@@ -24,8 +24,8 @@ protected:
     mat4 mColliderMatrix = mat4(1.0f);
 
 public:
-    virtual Mesh* GetMesh(int _index = 0) override {return (Mesh*)mMesh;}
-    virtual BaseMaterial* GetRendererMaterial(int _index = 0) override {return (BaseMaterial*)mMaterial;}
+    virtual Mesh* GetMesh() override {return (Mesh*)mMesh;}
+    virtual BaseMaterial* GetRendererMaterial() override {return (BaseMaterial*)mMaterial;}
 
     void SetCenter(const vec3& _center) {mCenter = _center;}
     void SetRadius(const float _radius) {mRadius = _radius;}

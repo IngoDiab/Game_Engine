@@ -14,8 +14,6 @@ void ShaderHandler::Initialize()
 {
     BaseShaderHandler::Initialize();
 
-    GetUniformLocation(mIsUsingNormalMapHandler, "mUseNormalMap");
-
     //Get colors handlers
     GetUniformLocation(mColorsHandlers[(int)COLOR_SLOT::AMBIENT], "mAmbient");
     GetUniformLocation(mColorsHandlers[(int)COLOR_SLOT::DIFFUSE], "mDiffuse");
@@ -37,5 +35,4 @@ void ShaderHandler::Initialize()
     GetUniformLocation(mCoeffsHandlers[(int)COEFF_SLOT::EMISSIVNESS], "mEmissivness");
     GetUniformLocation(mCoeffsHandlers[(int)COEFF_SLOT::HEIGHT], "mHeight");
     GetUniformLocation(mCoeffsHandlers[(int)COEFF_SLOT::TILING], "mTiling");
-    GetUniformLocation(mCoeffsHandlers[(int)COEFF_SLOT::SHININESS], "mShininess");
 }

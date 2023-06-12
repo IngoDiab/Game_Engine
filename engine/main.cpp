@@ -27,7 +27,7 @@ int main(int argc, char** argv)
     SceneTP4 _sceneTP4 = SceneTP4();
     _sceneManager->AddScene("TP4",&_sceneTP4);
 
-    _sceneManager->LoadScene("TP3");
+    _sceneManager->LoadScene("TP1");
     _engine.Run();
     return 0;
 }

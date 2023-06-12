@@ -62,14 +62,13 @@ void Landscape::CleanRessources()
     delete mMaterial;
 }
 
-void Landscape::ApplyHeightmap(const string& _heightmapPath, const float _maxHeight, const float _shift)
+void Landscape::ApplyHeightmap(const string& _heightmapPath, const float _maxHeight)
 {
     if(mHeightmap) freeImage(mHeightmap);
-    mMaxHeight = _maxHeight/256.f;
+    mMaxHeight = _maxHeight;
 	int channels = 1;
     mHeightmap = loadImage(_heightmapPath, mWidthImage, mHeightImage, channels, 1);
-    mMaterial->SetHeightmap(_heightmapPath, mMaxHeight);
-    mMaterial->SetShift(_shift);
+    mMaterial->SetHeightmap(_heightmapPath, _maxHeight);
 }
 
 void Landscape::ChangeResolution(const int _nbVertexWidth, const int _nbVertexLength)
@@ -91,7 +90,7 @@ void Landscape::DecreaseResolution(const bool _decrease)
 }
 
 //TODO REFACTOR
-void Landscape::GetProjectionOnPlane(vec3& _pointToProject, float _offset)
+void Landscape::GetProjectionOnPlane(vec3& _pointToProject)
 {
     if(!mMesh) return;
     mat4 _modelMatrix = mTransform.GetModelMatrix();
@@ -140,7 +139,7 @@ void Landscape::GetProjectionOnPlane(vec3& _pointToProject, float _offset)
         vec2 _upRightUV = mMesh->GetUVVertex(_uv.x,_uv.y, true, true);
 
         double _height = _u0*TexelByUV(_bottomLeftUV)+_u1*TexelByUV(_bottomRightUV)+_u2*TexelByUV(_upRightUV);
-        _pointToProject = _resultPos + vec3(0,_height+_offset-mMaterial->GetShift(),0);
+        _pointToProject = _resultPos + vec3(0,_height+10,0);
     }
     else if(InTriangle(_resultPos, _bottomLeft, _upRight, _upLeft, _u0, _u1, _u2))
     {
@@ -149,7 +148,7 @@ void Landscape::GetProjectionOnPlane(vec3& _pointToProject, float _offset)
         vec2 _upLeftUV = mMesh->GetUVVertex(_uv.x,_uv.y, false, true);
 
         double _height = _u0*TexelByUV(_bottomLeftUV)+_u1*TexelByUV(_upRightUV)+_u2*TexelByUV(_upLeftUV);
-        _pointToProject = _resultPos + vec3(0,_height+_offset-mMaterial->GetShift(),0);
+        _pointToProject = _resultPos + vec3(0,_height+10,0);
     }
 }
 

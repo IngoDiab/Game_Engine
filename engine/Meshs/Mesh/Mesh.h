@@ -7,6 +7,8 @@ using namespace std;
 #include <glm/glm.hpp>
 using namespace glm;
 
+#include <assimp/scene.h>
+
 #include "engine/Buffers/VBO/VBO.h"
 
 enum class VERTEX_ATTRIBUTE
@@ -34,20 +36,30 @@ struct Triangle
 
 class Mesh
 {
-    friend class AssimpLoader;
-    
 protected:
-    vector<vec3> mPositions = vector<vec3>();
-    VBO mPositionVBO = VBO(GL_ARRAY_BUFFER);
+    vector<vec3> mPositions;
+    VBO mPositionVBO;
 
-    vector<vec2> mUVs = vector<vec2>();
-    VBO mUVsVBO = VBO(GL_ARRAY_BUFFER);
+    vector<vec2> mUVs;
+    VBO mUVsVBO;
 
-    vector<vec3> mNormales = vector<vec3>();
-    VBO mNormalVBO = VBO(GL_ARRAY_BUFFER);
+    vector<vec3> mNormales;
+    VBO mNormalVBO;
 
-    vector<unsigned short> mIndices = vector<unsigned short>();
-    VBO mIndicesVBO = VBO(GL_ELEMENT_ARRAY_BUFFER);
+    vector<unsigned short> mIndices;
+    VBO mIndicesVBO;
+
+    // vector<vec3> mPositions = vector<vec3>();
+    // VBO mPositionVBO = VBO(GL_ARRAY_BUFFER);
+
+    // vector<vec2> mUVs = vector<vec2>();
+    // VBO mUVsVBO = VBO(GL_ARRAY_BUFFER);
+
+    // vector<vec3> mNormales = vector<vec3>();
+    // VBO mNormalVBO = VBO(GL_ARRAY_BUFFER);
+
+    // vector<unsigned short> mIndices = vector<unsigned short>();
+    // VBO mIndicesVBO = VBO(GL_ELEMENT_ARRAY_BUFFER);
 
     std::vector<Triangle> mTriangles;
 
@@ -57,6 +69,7 @@ public:
 
 public:
     Mesh();
+    Mesh(const string& _pathMesh);
     virtual ~Mesh();
     Mesh(const vector<vec3>& _positions, const vector<vec2>& _uvs, const vector<unsigned short>& _indices, const std::vector<Triangle>& _triangles);
 
@@ -71,4 +84,8 @@ protected:
 
 public:
     void DrawMesh();
+
+private:
+    void CreateMeshLoaded(aiMesh* _loadedMesh);
+    void LoadMeshAssimp(const string& _pathMesh);
 };
