@@ -41,7 +41,7 @@ Landscape* SceneTP3::CreateLandscape()
 {
     ObjectManager* _objectManager = ObjectManager::Instance();
     Landscape* _landscape = _objectManager->Create<Landscape>(vec3(0), vec3(0), vec3(200,1,200));
-    _landscape->ChangeResolution(2,2);
+    _landscape->ChangeResolution(256,256);
     _landscape->ApplyHeightmap("Textures/Heightmaps/height_test.png",100);
 
     LandscapeMaterial* _landscapeMaterial= _landscape->GetMaterial();
